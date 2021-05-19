@@ -31,7 +31,13 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.refresh)),
           IconButton(onPressed: () {}, icon: Icon(Icons.refresh)),
-          PopupMenuButton(itemBuilder: )
+          PopupMenuButton(itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(child: Text("Menu 1")),
+              PopupMenuItem(child: Text("menu 2")),
+              PopupMenuItem(child: Text("Menu 3")),
+            ];
+          })
         ],
       ),
       drawer: Drawer(
@@ -75,38 +81,44 @@ class _HomePageState extends State<HomePage> {
                     itemCount: data.length,
                     itemBuilder: (context, index) {
                       News news = data.elementAt(index);
-                      return Card(
-                        margin: const EdgeInsets.all(10),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        elevation: 20,
-                        child: Container(
-                          padding: const EdgeInsets.all(5),
-                          height: 200,
-                          child: Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(news.photo,
-                                    width: MediaQuery.of(context).size.width,
-                                    fit: BoxFit.cover),
-                              ),
-                              Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Opacity(
-                                      opacity: 0.7,
-                                      child: Container(
-                                        color: Colors.black,
-                                        child: ListTile(
-                                          title: Text(news.title,
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                          subtitle: Text(news.summary,
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                        ),
-                                      ))),
-                            ],
+                      return GestureDetector(
+                        onTap: () {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text("hallo")));
+                        },
+                        child: Card(
+                          margin: const EdgeInsets.all(10),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          elevation: 20,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            height: 200,
+                            child: Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(news.photo,
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.cover),
+                                ),
+                                Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Opacity(
+                                        opacity: 0.7,
+                                        child: Container(
+                                          color: Colors.black,
+                                          child: ListTile(
+                                            title: Text(news.title,
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            subtitle: Text(news.summary,
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                          ),
+                                        ))),
+                              ],
+                            ),
                           ),
                         ),
                       );
