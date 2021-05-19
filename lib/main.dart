@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:beritakita/configs/config.dart';
 
 import 'dart:async';
-import 'dart:convert';
 
 void main() => runApp(MyApp());
 
@@ -56,8 +55,8 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder(
           future: _futureResponse,
           builder: (context, snapshot) {
-            List<News>? data = (snapshot.data as NewsResponse).data;
             if (snapshot.hasData) {
+              List<News>? data = (snapshot.data as NewsResponse).data;
               return ListView.builder(
                   itemCount: data!.length,
                   itemBuilder: (context, index) {
@@ -69,10 +68,14 @@ class _HomePageState extends State<HomePage> {
                     );
                   });
             } else if (snapshot.hasError) {
-              return Text("ada error: ${snapshot.error}");
+              return Center(
+                child: Text("ada error: ${snapshot.error}"),
+              );
             }
 
-            return new CircularProgressIndicator();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
