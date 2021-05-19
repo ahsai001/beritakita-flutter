@@ -1,5 +1,5 @@
 import 'package:beritakita/home/models/news_response.dart';
-
+import 'package:beritakita/newsdetail/news_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:beritakita/configs/config.dart';
@@ -83,8 +83,12 @@ class _HomePageState extends State<HomePage> {
                       News news = data.elementAt(index);
                       return GestureDetector(
                         onTap: () {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text("hallo")));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Item $index clicked")));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return NewsDetailPage(news: news);
+                          }));
                         },
                         child: Card(
                           margin: const EdgeInsets.all(10),
