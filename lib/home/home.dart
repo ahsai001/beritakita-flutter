@@ -17,6 +17,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<NewsResponse>? _futureResponse;
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     super.initState();
@@ -29,8 +31,11 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.refresh)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.refresh)),
+          IconButton(
+              onPressed: () {
+                _refreshIndicatorKey.currentState?.show();
+              },
+              icon: Icon(Icons.refresh)),
           PopupMenuButton(itemBuilder: (BuildContext context) {
             return [
               PopupMenuItem(child: Text("Menu 1")),
@@ -71,91 +76,102 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: FutureBuilder(
-          future: _futureResponse,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<News>? data = (snapshot.data as NewsResponse).data;
-              if (data != null) {
-                return ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      News news = data.elementAt(index);
-                      return GestureDetector(
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Item $index clicked")));
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return NewsDetailPage(news: news);
-                          }));
-                        },
-                        child: Card(
-                          margin: const EdgeInsets.all(10),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          elevation: 20,
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            height: 200,
-                            child: Stack(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(news.photo,
-                                      width: MediaQuery.of(context).size.width,
-                                      fit: BoxFit.cover),
-                                ),
-                                Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Opacity(
-                                        opacity: 0.7,
-                                        child: Container(
-                                            color: Colors.black,
-                                            child: ListTile(
-                                                title: Text(news.title,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .subtitle1
-                                                        ?.apply(
-                                                            color: Colors.white,
-                                                            fontSizeDelta: 2,
-                                                            fontWeightDelta:
-                                                                4)),
-                                                subtitle: Text(news.summary,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .subtitle2
-                                                        ?.apply(
-                                                            color: Colors
-                                                                .white)))))),
-                              ],
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _refreshNews,
+        child: FutureBuilder(
+            future: _futureResponse,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<News>? data = (snapshot.data as NewsResponse).data;
+                if (data != null) {
+                  return ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        News news = data.elementAt(index);
+                        return GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Item $index clicked")));
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return NewsDetailPage(news: news);
+                            }));
+                          },
+                          child: Card(
+                            margin: const EdgeInsets.all(10),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            elevation: 20,
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              height: 200,
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(news.photo,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        fit: BoxFit.cover),
+                                  ),
+                                  Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Opacity(
+                                          opacity: 0.7,
+                                          child: Container(
+                                              color: Colors.black,
+                                              child: ListTile(
+                                                  title: Text(news.title,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .subtitle1
+                                                          ?.apply(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSizeDelta: 2,
+                                                              fontWeightDelta:
+                                                                  4)),
+                                                  subtitle: Text(news.summary,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .subtitle2
+                                                          ?.apply(
+                                                              color: Colors
+                                                                  .white)))))),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    });
-              } else {
+                        );
+                      });
+                } else {
+                  return Center(
+                    child: Text("Ooops data kosong"),
+                  );
+                }
+              } else if (snapshot.hasError) {
                 return Center(
-                  child: Text("Ooops data kosong"),
+                  child: Text("ada error: ${snapshot.error}"),
                 );
               }
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text("ada error: ${snapshot.error}"),
-              );
-            }
 
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }),
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.add),
         backgroundColor: Colors.green,
       ),
     );
+  }
+
+  Future<void> _refreshNews() async {
+    print("run refresh news");
+    return _getNewsAll() as Future;
   }
 
   Future<NewsResponse>? _getNewsAll() async {

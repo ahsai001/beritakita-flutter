@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:beritakita/configs/config.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 import 'package:beritakita/newsdetail/models/news_detail_response.dart';
 import 'dart:async';
 import 'package:beritakita/home/models/news_response.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetailPage extends StatefulWidget {
-  News? news;
+  final News? news;
 
   NewsDetailPage({required this.news});
 
@@ -37,6 +40,14 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               NewsDetail data = (snapshot.data as NewsDetailResponse).data;
+
+              //update title appbar
+              SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+                setState(() {
+                  _title = data.title;
+                });
+              });
+
               return ListView(
                 padding: const EdgeInsets.all(10),
                 children: [
@@ -88,11 +99,24 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text(data.body,
+                  Linkify(
+                      onOpen: (link) async {
+                        if (await canLaunch(link.url)) {
+                          await launch(link.url);
+                        } else {
+                          throw 'Could not launch $link';
+                        }
+                      },
+                      text: data.body,
                       style: Theme.of(context)
                           .textTheme
                           .subtitle2
-                          ?.apply(fontSizeDelta: 2))
+                          ?.apply(fontSizeDelta: 2)),
+                  // Text(data.body,
+                  //     style: Theme.of(context)
+                  //         .textTheme
+                  //         .subtitle2
+                  //         ?.apply(fontSizeDelta: 2))
                 ],
               );
             } else if (snapshot.hasError) {
