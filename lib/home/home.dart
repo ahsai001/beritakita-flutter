@@ -111,16 +111,24 @@ class _HomePageState extends State<HomePage> {
                                     child: Opacity(
                                         opacity: 0.7,
                                         child: Container(
-                                          color: Colors.black,
-                                          child: ListTile(
-                                            title: Text(news.title,
-                                                style: TextStyle(
-                                                    color: Colors.white)),
-                                            subtitle: Text(news.summary,
-                                                style: TextStyle(
-                                                    color: Colors.white)),
-                                          ),
-                                        ))),
+                                            color: Colors.black,
+                                            child: ListTile(
+                                                title: Text(news.title,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle1
+                                                        ?.apply(
+                                                            color: Colors.white,
+                                                            fontSizeDelta: 2,
+                                                            fontWeightDelta:
+                                                                4)),
+                                                subtitle: Text(news.summary,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle2
+                                                        ?.apply(
+                                                            color: Colors
+                                                                .white)))))),
                               ],
                             ),
                           ),

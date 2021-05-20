@@ -16,6 +16,7 @@ class NewsDetailPage extends StatefulWidget {
 
 class _NewsDetailPageState extends State<NewsDetailPage> {
   Future<NewsDetailResponse>? _futureResponse;
+  String _title = "News Detail";
 
   @override
   void initState() {
@@ -27,22 +28,71 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("News Detail"),
+        title: Text(_title),
         actions: [],
+        automaticallyImplyLeading: true,
       ),
       body: FutureBuilder(
           future: _futureResponse,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               NewsDetail data = (snapshot.data as NewsDetailResponse).data;
-
               return ListView(
+                padding: const EdgeInsets.all(10),
                 children: [
                   Image.network(data.photo,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover),
-                  Text(data.title),
-                  Text(data.body)
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(data.created_by,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                ?.apply(fontSizeDelta: 4)),
+                        Text(data.created_at,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                ?.apply(fontSizeDelta: 2))
+                      ]),
+                  Stack(children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(data.created_by,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.apply(fontSizeDelta: 4)),
+                    ),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(data.created_at,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                ?.apply(fontSizeDelta: 2))),
+                  ]),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(data.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          ?.apply(fontSizeDelta: 4)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(data.body,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          ?.apply(fontSizeDelta: 2))
                 ],
               );
             } else if (snapshot.hasError) {
