@@ -1,8 +1,11 @@
+import 'package:beritakita/addnews/addnews.dart';
 import 'package:beritakita/home/models/news_response.dart';
 import 'package:beritakita/newsdetail/news_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:beritakita/configs/config.dart';
+import 'package:beritakita/login/login.dart';
+import 'package:beritakita/utils/login_util.dart';
 
 import 'dart:async';
 
@@ -72,7 +75,13 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(title: Text("Home"), onTap: () {}),
             ListTile(title: Text("Logout"), onTap: () {}),
-            ListTile(title: Text("Login"), onTap: () {}),
+            ListTile(
+                title: Text("Login"),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return LoginPage();
+                  }));
+                }),
           ],
         ),
       ),
@@ -162,7 +171,19 @@ class _HomePageState extends State<HomePage> {
             }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          LoginUtil.isLoggedIn().then((value) {
+            if (value) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return AddNewsPage();
+              }));
+            } else {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return LoginPage();
+              }));
+            }
+          });
+        },
         child: const Icon(Icons.add),
         backgroundColor: Colors.green,
       ),
