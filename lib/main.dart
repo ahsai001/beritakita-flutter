@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:beritakita/home/home.dart';
+import 'package:beritakita/src/home/home.dart';
 
 void main() => runApp(MyApp());
 

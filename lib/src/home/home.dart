@@ -1,11 +1,11 @@
-import 'package:beritakita/addnews/addnews.dart';
-import 'package:beritakita/home/models/news_response.dart';
-import 'package:beritakita/newsdetail/news_detail.dart';
+import 'package:beritakita/src/addnews/addnews.dart';
+import 'package:beritakita/src/home/models/news_response.dart';
+import 'package:beritakita/src/newsdetail/news_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:beritakita/configs/config.dart';
-import 'package:beritakita/login/login.dart';
-import 'package:beritakita/utils/login_util.dart';
+import 'package:beritakita/src/configs/config.dart';
+import 'package:beritakita/src/login/login.dart';
+import 'package:beritakita/src/utils/login_util.dart';
 
 import 'dart:async';
 
