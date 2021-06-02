@@ -20,13 +20,13 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 CircleAvatar(),
                 TextFormField(
-                  decoration: InputDecoration(labelText: "Username"),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please insert username";
-                    }
-                  },
-                ),
+                    decoration: InputDecoration(labelText: "Username"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please insert username";
+                      }
+                    },
+                    onSaved: (value) {}),
                 TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(labelText: "Password"),
@@ -35,17 +35,20 @@ class _LoginPageState extends State<LoginPage> {
                       return "Please insert password";
                     }
                   },
+                  onSaved: (value) {},
                 ),
-                ElevatedButton(
-                  child: Text("login"),
-                  onPressed: () {
-                    //FormState? _formState = _formKey.currentState;
-                    FormState? _formState = Form.of(context);
-                    if (_formState?.validate() ?? false) {
-                      _formState?.save();
-                    }
-                  },
-                ),
+                Builder(builder: (context) {
+                  return ElevatedButton(
+                    child: Text("login"),
+                    onPressed: () {
+                      //FormState? _formState = _formKey.currentState;
+                      FormState? _formState = Form.of(context);
+                      if (_formState?.validate() ?? false) {
+                        _formState?.save();
+                      }
+                    },
+                  );
+                }),
               ],
             ),
           ),

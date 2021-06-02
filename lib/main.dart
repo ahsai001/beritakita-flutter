@@ -1,19 +1,12 @@
+import 'package:beritakita/src/app.dart';
 import 'package:flutter/material.dart';
-import 'package:beritakita/src/home/home.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(Main());
 
-class MyApp extends StatelessWidget {
+class Main extends StatelessWidget {
   // This widget is the root of your application.+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Berita Kita',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(title: 'Home Page'),
-      debugShowCheckedModeBanner: false,
-    );
+    return App();
   }
 }
