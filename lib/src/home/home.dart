@@ -9,30 +9,18 @@ import 'package:beritakita/src/utils/login_util.dart';
 
 import 'dart:async';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   final String title;
-
   HomePage({required this.title});
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  Future<NewsResponse>? _futureResponse;
-  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-  @override
-  void initState() {
-    super.initState();
-    _futureResponse = _getNewsAll();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
         actions: [
           IconButton(
               onPressed: () {
@@ -89,7 +77,7 @@ class _HomePageState extends State<HomePage> {
         key: _refreshIndicatorKey,
         onRefresh: _refreshNews,
         child: FutureBuilder(
-            future: _futureResponse,
+            future: _getNewsAll(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<News>? data = (snapshot.data as NewsResponse).data;

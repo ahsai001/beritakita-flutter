@@ -1,3 +1,4 @@
+import 'package:beritakita/src/widgets/color_loader.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -42,9 +43,41 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text("login"),
                     onPressed: () {
                       //FormState? _formState = _formKey.currentState;
-                      FormState? _formState = Form.of(context);
+                      FormState? _formState = Form.of(
+                          context); //to use this, need Builder widget inside Form
                       if (_formState?.validate() ?? false) {
                         _formState?.save();
+
+                        /*showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Hellow'),
+                                content: Text("ini adalah informasi"),
+                                actions: [
+                                  ElevatedButton(
+                                    child: Text('yes'),
+                                    onPressed: () {},
+                                  ),
+                                  ElevatedButton(
+                                    child: Text('cancel'),
+                                    onPressed: () {},
+                                  ),
+                                  ElevatedButton(
+                                    child: Text('ignore'),
+                                    onPressed: () {},
+                                  )
+                                ],
+                              );
+                            });*/
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ColorLoader(
+                                radius: 10,
+                                dotRadius: 10,
+                              );
+                            });
                       }
                     },
                   );

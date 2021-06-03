@@ -8,6 +8,7 @@ import 'package:beritakita/src/home/models/news_response.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+//we need statefull, because we need use setState
 class NewsDetailPage extends StatefulWidget {
   final News? news;
 
