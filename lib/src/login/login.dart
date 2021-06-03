@@ -57,15 +57,21 @@ class _LoginPageState extends State<LoginPage> {
                                 actions: [
                                   ElevatedButton(
                                     child: Text('yes'),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pop(context)
+                                    },
                                   ),
                                   ElevatedButton(
                                     child: Text('cancel'),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pop(context)
+                                    },
                                   ),
                                   ElevatedButton(
                                     child: Text('ignore'),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pop(context)
+                                    },
                                   )
                                 ],
                               );
@@ -73,11 +79,19 @@ class _LoginPageState extends State<LoginPage> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return ColorLoader(
-                                radius: 10,
-                                dotRadius: 10,
-                              );
-                            });
+                              return WillPopScope(
+                                  child: ColorLoader(
+                                    radius: 20,
+                                    dotRadius: 5,
+                                  ),
+                                  onWillPop: () async {
+                                    return false;
+                                  });
+                            },
+                            barrierDismissible: false);
+
+                        Future.delayed(Duration(milliseconds: 5000))
+                            .then((value) => {Navigator.pop(context)});
                       }
                     },
                   );
