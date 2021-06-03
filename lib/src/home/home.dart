@@ -92,7 +92,7 @@ class HomePage extends StatelessWidget {
             ListTile(
                 title: Text("Login"),
                 onTap: () {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return LoginPage();
                   }));
