@@ -62,10 +62,37 @@ class HomePage extends StatelessWidget {
               ),
             ),
             ListTile(title: Text("Home"), onTap: () {}),
-            ListTile(title: Text("Logout"), onTap: () {}),
+            ListTile(
+                title: Text("Logout"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Logout Confirmation'),
+                          content: Text("Are you sure want to logout?"),
+                          actions: [
+                            ElevatedButton(
+                              child: Text('yes'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ElevatedButton(
+                              child: Text('cancel'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            )
+                          ],
+                        );
+                      });
+                }),
             ListTile(
                 title: Text("Login"),
                 onTap: () {
+                  Navigator.of(context).pop();
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return LoginPage();
                   }));
