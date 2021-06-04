@@ -26,7 +26,9 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(),
+                CircleAvatar(
+                  child: Icon(Icons.ac_unit),
+                ),
                 TextFormField(
                     decoration: InputDecoration(labelText: "Username"),
                     validator: (value) {

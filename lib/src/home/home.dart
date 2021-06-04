@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  bool _loginVisibility = true, _logoutVisibility = false;
+  bool _isLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,10 @@ class _HomePageState extends State<HomePage> {
                 //color: Colors.green,
                 child: Stack(children: [
                   Align(
-                      alignment: Alignment.centerRight, child: CircleAvatar()),
+                      alignment: Alignment.centerRight,
+                      child: CircleAvatar(
+                        child: Icon(Icons.ac_unit),
+                      )),
                   Align(
                       alignment: Alignment.centerLeft,
                       child: Column(
@@ -72,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 visible: false,
                 child: ListTile(title: Text("Home"), onTap: () {})),
             Visibility(
-              visible: _logoutVisibility,
+              visible: _isLoggedIn,
               child: ListTile(
                   title: Text("Logout"),
                   onTap: () {
@@ -102,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                   }),
             ),
             Visibility(
-              visible: _loginVisibility,
+              visible: !_isLoggedIn,
               child: ListTile(
                   title: Text("Login"),
                   onTap: () {
@@ -112,8 +115,7 @@ class _HomePageState extends State<HomePage> {
                       return LoginPage();
                     })).then((isLoggedIn) => {
                           setState(() {
-                            _loginVisibility = !isLoggedIn;
-                            _logoutVisibility = isLoggedIn;
+                            _isLoggedIn = isLoggedIn;
                           })
                         });
                   }),
