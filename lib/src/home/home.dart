@@ -9,18 +9,25 @@ import 'package:beritakita/src/utils/login_util.dart';
 
 import 'dart:async';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final String title;
   HomePage({required this.title});
 
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+
+  bool _loginVisibility = true, _logoutVisibility = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
         actions: [
           IconButton(
               onPressed: () {
@@ -61,42 +68,56 @@ class HomePage extends StatelessWidget {
                 ]),
               ),
             ),
-            ListTile(title: Text("Home"), onTap: () {}),
-            ListTile(
-                title: Text("Logout"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text('Logout Confirmation'),
-                          content: Text("Are you sure want to logout?"),
-                          actions: [
-                            ElevatedButton(
-                              child: Text('yes'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ElevatedButton(
-                              child: Text('cancel'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            )
-                          ],
-                        );
-                      });
-                }),
-            ListTile(
-                title: Text("Login"),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return LoginPage();
-                  }));
-                }),
+            Visibility(
+                visible: false,
+                child: ListTile(title: Text("Home"), onTap: () {})),
+            Visibility(
+              visible: _logoutVisibility,
+              child: ListTile(
+                  title: Text("Logout"),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Logout Confirmation'),
+                            content: Text("Are you sure want to logout?"),
+                            actions: [
+                              ElevatedButton(
+                                child: Text('yes'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              ElevatedButton(
+                                child: Text('cancel'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }),
+            ),
+            Visibility(
+              visible: _loginVisibility,
+              child: ListTile(
+                  title: Text("Login"),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return LoginPage();
+                    })).then((isLoggedIn) => {
+                          setState(() {
+                            _loginVisibility = !isLoggedIn;
+                            _logoutVisibility = isLoggedIn;
+                          })
+                        });
+                  }),
+            ),
           ],
         ),
       ),

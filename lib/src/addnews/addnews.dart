@@ -9,12 +9,13 @@ class _AddNewsPageState extends State<AddNewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(title: Text("Add News")),
       body: Container(
         padding: const EdgeInsets.all(10),
         child: Form(
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
                   decoration: InputDecoration(labelText: "Title"),
