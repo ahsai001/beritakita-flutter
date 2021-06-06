@@ -77,24 +77,20 @@ class _LoginPageState extends State<LoginPage> {
 
                         /*Future.delayed(Duration(milliseconds: 5000))
                             .then((value) => {Navigator.pop(context)});*/
-                        _login(request)?.then((LoginResponse value) => {
-                              if (value.status == 1)
-                                {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text("Login Berhasil"))),
-                                  LoginUtil.saveLoginData(value.data),
-                                  Navigator.pop(context), //close loading dialog
-                                  Navigator.pop(context, true) //close login
-                                }
-                              else
-                                {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text("Login Gagal"))),
-                                  Navigator.pop(context), //close loading dialog
-                                  Navigator.pop(context, false) //close login
-                                }
-                            });
+                        _login(request)?.then((LoginResponse value) {
+                          if (value.status == 1) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Login Berhasil")));
+                            LoginUtil.saveLoginData(value.data);
+                            Navigator.pop(context); //close loading dialog
+                            Navigator.pop(context, true); //close login
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Login Gagal")));
+                            Navigator.pop(context); //close loading dialog
+                            Navigator.pop(context, false); //close login
+                          }
+                        });
                       }
                     },
                   );

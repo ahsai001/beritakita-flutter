@@ -1,3 +1,4 @@
+import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:flutter/material.dart';
 import 'package:beritakita/src/home/home.dart';
 
@@ -6,7 +7,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: (context, child) {
-        return SafeArea(child: child!);
+        return AppRoot(child: child!);
       },
       title: 'Berita Kita',
       theme: ThemeData(

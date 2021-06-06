@@ -1,6 +1,7 @@
 import 'package:beritakita/src/addnews/addnews.dart';
 import 'package:beritakita/src/home/models/news_response.dart';
 import 'package:beritakita/src/newsdetail/news_detail.dart';
+import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:beritakita/src/configs/config.dart';
@@ -75,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                 visible: false,
                 child: ListTile(title: Text("Home"), onTap: () {})),
             Visibility(
-              visible: _isLoggedIn,
+              visible: AppRoot.of(context)?.isLoggedIn ?? false,
               child: ListTile(
                   title: Text("Logout"),
                   onTap: () {
@@ -105,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                   }),
             ),
             Visibility(
-              visible: !_isLoggedIn,
+              visible: !(AppRoot.of(context)?.isLoggedIn ?? false),
               child: ListTile(
                   title: Text("Login"),
                   onTap: () {
@@ -113,11 +114,12 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return LoginPage();
-                    })).then((isLoggedIn) => {
-                          setState(() {
-                            _isLoggedIn = isLoggedIn;
-                          })
-                        });
+                    })).then((isLoggedIn) {
+                      print(isLoggedIn);
+                      /*setState(() {
+                        _isLoggedIn = isLoggedIn;
+                      });*/
+                    });
                   }),
             ),
           ],
