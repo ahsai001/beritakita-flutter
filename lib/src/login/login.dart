@@ -2,6 +2,7 @@ import 'package:beritakita/src/configs/config.dart';
 import 'package:beritakita/src/login/models/login_request.dart';
 import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:beritakita/src/utils/login_util.dart';
+import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:beritakita/src/widgets/color_loader.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -52,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 Builder(builder: (context) {
+                  //we use Builder, if we want to use Form.of()
                   return ElevatedButton(
                     child: Text("login"),
                     onPressed: () {
@@ -65,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                             context: context,
                             builder: (context) {
                               return WillPopScope(
+                                  //use this to disable back button
                                   child: ColorLoader(
                                     radius: 20,
                                     dotRadius: 5,
@@ -81,14 +84,19 @@ class _LoginPageState extends State<LoginPage> {
                           if (value.status == 1) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text("Login Berhasil")));
-                            LoginUtil.saveLoginData(value.data);
-                            Navigator.pop(context); //close loading dialog
-                            Navigator.pop(context, true); //close login
+                            LoginUtil.saveLoginData(value.data).then((value) {
+                              Navigator.pop(context); //close loading dialog
+                              Navigator.pop(context, true); //close login
+                              //use returned data when pop or use code below
+                              AppRoot.of(context)?.isLoggedIn = true;
+                            });
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text("Login Gagal")));
                             Navigator.pop(context); //close loading dialog
                             Navigator.pop(context, false); //close login
+                            //use returned data when pop or use code below
+                            AppRoot.of(context)?.isLoggedIn = false;
                           }
                         });
                       }
@@ -103,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<LoginResponse>? _login(LoginRequest request) async {
     final response = await http.post(
-        Uri.https(Config.BASE_AUTHORITY, Config.getLoginPath()),
+        Uri.http(Config.BASE_AUTHORITY, Config.getLoginPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',

@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
 
+// ignore: must_be_immutable
 class AppRoot extends InheritedWidget {
-  final bool isLoggedIn = false;
+  bool isLoggedIn = false;
 
   AppRoot({required Widget child}) : super(child: child);
 

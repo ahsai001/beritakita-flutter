@@ -133,7 +133,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
 
   Future<NewsDetailResponse>? _getNewsDetail(String newsId) async {
     final response = await http.post(
-        Uri.https(Config.BASE_AUTHORITY,
+        Uri.http(Config.BASE_AUTHORITY,
             Config.getNewsDetailPath().replaceAll("{id}", newsId)),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',

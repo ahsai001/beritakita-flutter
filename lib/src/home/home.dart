@@ -3,6 +3,7 @@ import 'package:beritakita/src/home/models/news_response.dart';
 import 'package:beritakita/src/newsdetail/news_detail.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 import 'package:beritakita/src/configs/config.dart';
 import 'package:beritakita/src/login/login.dart';
@@ -23,9 +24,20 @@ class _HomePageState extends State<HomePage> {
       GlobalKey<RefreshIndicatorState>();
 
   bool _isLoggedIn = false;
+  Future<NewsResponse>? _newsResponseFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+      _refreshIndicatorKey.currentState?.show();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    _isLoggedIn = AppRoot.of(context)?.isLoggedIn ?? false;
+    print("build home : $_isLoggedIn");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -76,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                 visible: false,
                 child: ListTile(title: Text("Home"), onTap: () {})),
             Visibility(
-              visible: AppRoot.of(context)?.isLoggedIn ?? false,
+              visible: _isLoggedIn,
               child: ListTile(
                   title: Text("Logout"),
                   onTap: () {
@@ -106,11 +118,13 @@ class _HomePageState extends State<HomePage> {
                   }),
             ),
             Visibility(
-              visible: !(AppRoot.of(context)?.isLoggedIn ?? false),
+              visible: !_isLoggedIn,
               child: ListTile(
                   title: Text("Login"),
                   onTap: () {
+                    //close drawer
                     Navigator.pop(context);
+                    //open login page
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return LoginPage();
@@ -129,7 +143,7 @@ class _HomePageState extends State<HomePage> {
         key: _refreshIndicatorKey,
         onRefresh: _refreshNews,
         child: FutureBuilder(
-            future: _getNewsAll(),
+            future: _newsResponseFuture,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<News>? data = (snapshot.data as NewsResponse).data;
@@ -230,14 +244,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _refreshNews() async {
+  Future<NewsResponse?> _refreshNews() async {
     print("run refresh news");
-    return _getNewsAll() as Future;
+    setState(() {
+      _newsResponseFuture = _getNewsAll();
+    });
+    return _newsResponseFuture;
   }
 
   Future<NewsResponse>? _getNewsAll() async {
     final response = await http.post(
-        Uri.https(Config.BASE_AUTHORITY, Config.getNewsListPath()),
+        Uri.http(Config.BASE_AUTHORITY, Config.getNewsListPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
@@ -248,9 +265,9 @@ class _HomePageState extends State<HomePage> {
           'groupcode': Config.GROUP_CODE,
           'keyword': "",
         });
-
+    //print(response.statusCode);
     if (response.statusCode == 200) {
-      //print(response.body);
+      print(response.body);
       return NewsResponse.fromJson(response.body);
     } else {
       throw Exception('Failed to get list.');
