@@ -1,6 +1,6 @@
 class Config {
-  //static const String BASE_AUTHORITY = "api.zaitunlabs.com";
-  static const String BASE_AUTHORITY = "192.168.43.172:8080";
+  static const String BASE_AUTHORITY = "api.zaitunlabs.com";
+  //static const String BASE_AUTHORITY = "192.168.43.172:8080";
   //https://flutter.dev/docs/release/breaking-changes/network-policy-ios-android
 
   static const String BASE_PATH = "/kango/cijou/";

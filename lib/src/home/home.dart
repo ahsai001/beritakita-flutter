@@ -25,12 +25,23 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   Future<NewsResponse>? _newsResponseFuture;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       _refreshIndicatorKey.currentState?.show();
+    });
+
+    isLoggedIn();
+  }
+
+  void isLoggedIn() async {
+    _isLoggedIn = await LoginUtil.isLoggedIn();
+    print("method isLoggedIn");
+    setState(() {
+      //_isLoggedIn = isLoggedIn;
     });
   }
 
@@ -90,7 +101,7 @@ class _HomePageState extends State<HomePage> {
               builder: (context, appRoot, child) {
                 print("rebuild logout menu");
                 return Visibility(
-                  visible: appRoot.isLoggedIn,
+                  visible: _isLoggedIn,
                   child: ListTile(
                       title: Text("Logout"),
                       onTap: () {
@@ -109,7 +120,8 @@ class _HomePageState extends State<HomePage> {
                                       LoginUtil.logout().then((value) => {
                                             Provider.of<AppRoot>(context,
                                                     listen: false)
-                                                .setLoggedOut()
+                                                .setLoggedOut(),
+                                            isLoggedIn()
                                           });
                                     },
                                   ),
@@ -130,7 +142,7 @@ class _HomePageState extends State<HomePage> {
               builder: (context, appRoot, child) {
                 print("rebuild login menu");
                 return Visibility(
-                  visible: !appRoot.isLoggedIn,
+                  visible: !_isLoggedIn,
                   child: ListTile(
                       title: Text("Login"),
                       onTap: () {
@@ -141,10 +153,9 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return LoginPage();
-                        })).then((isLoggedIn) {
-                          print("login return : $isLoggedIn");
-                          /*setState(() {
-                        });*/
+                        })).then((isLoggedInNow) {
+                          print("login return : $isLoggedInNow");
+                          isLoggedIn();
                         });
                       }),
                 );
@@ -248,7 +259,10 @@ class _HomePageState extends State<HomePage> {
             } else {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return LoginPage();
-              }));
+              })).then((isLoggedInNow) {
+                print("login return : $isLoggedInNow");
+                isLoggedIn();
+              });
             }
           });
         },
@@ -268,7 +282,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<NewsResponse>? _getNewsAll() async {
     final response = await http.post(
-        Uri.http(Config.BASE_AUTHORITY, Config.getNewsListPath()),
+        Uri.https(Config.BASE_AUTHORITY, Config.getNewsListPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',

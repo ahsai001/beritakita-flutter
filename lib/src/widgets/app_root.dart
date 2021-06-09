@@ -5,11 +5,11 @@ class AppRoot extends ChangeNotifier {
 
   void setLoggedIn() {
     isLoggedIn = true;
-    notifyListeners();
+    //notifyListeners();
   }
 
   void setLoggedOut() {
     isLoggedIn = false;
-    notifyListeners();
+    //notifyListeners();
   }
 }
