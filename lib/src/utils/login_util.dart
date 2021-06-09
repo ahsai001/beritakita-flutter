@@ -28,7 +28,8 @@ class LoginUtil {
 
   static Future logout() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.remove(ISLOGGEDIN);
-    sharedPreferences.remove(LOGINDATA);
+    Future<bool> future1 = sharedPreferences.remove(ISLOGGEDIN);
+    Future<bool> future2 = sharedPreferences.remove(LOGINDATA);
+    return Future.wait([future1, future2]);
   }
 }

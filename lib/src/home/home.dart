@@ -11,6 +11,8 @@ import 'package:beritakita/src/utils/login_util.dart';
 
 import 'dart:async';
 
+import 'package:provider/provider.dart';
+
 class HomePage extends StatefulWidget {
   final String title;
   HomePage({required this.title});
@@ -22,8 +24,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-
-  bool _isLoggedIn = false;
   Future<NewsResponse>? _newsResponseFuture;
 
   @override
@@ -36,8 +36,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _isLoggedIn = AppRoot.of(context)?.isLoggedIn ?? false;
-    print("build home : $_isLoggedIn");
+    print("home rebuild");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -87,54 +86,69 @@ class _HomePageState extends State<HomePage> {
             Visibility(
                 visible: false,
                 child: ListTile(title: Text("Home"), onTap: () {})),
-            Visibility(
-              visible: _isLoggedIn,
-              child: ListTile(
-                  title: Text("Logout"),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('Logout Confirmation'),
-                            content: Text("Are you sure want to logout?"),
-                            actions: [
-                              ElevatedButton(
-                                child: Text('yes'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              ElevatedButton(
-                                child: Text('cancel'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              )
-                            ],
-                          );
-                        });
-                  }),
+            Consumer<AppRoot>(
+              builder: (context, appRoot, child) {
+                print("rebuild logout menu");
+                return Visibility(
+                  visible: appRoot.isLoggedIn,
+                  child: ListTile(
+                      title: Text("Logout"),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Logout Confirmation'),
+                                content: Text("Are you sure want to logout?"),
+                                actions: [
+                                  ElevatedButton(
+                                    child: Text('yes'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      LoginUtil.logout().then((value) => {
+                                            Provider.of<AppRoot>(context,
+                                                    listen: false)
+                                                .setLoggedOut()
+                                          });
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    child: Text('cancel'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  )
+                                ],
+                              );
+                            });
+                      }),
+                );
+              },
             ),
-            Visibility(
-              visible: !_isLoggedIn,
-              child: ListTile(
-                  title: Text("Login"),
-                  onTap: () {
-                    //close drawer
-                    Navigator.pop(context);
-                    //open login page
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return LoginPage();
-                    })).then((isLoggedIn) {
-                      print(isLoggedIn);
-                      /*setState(() {
-                        _isLoggedIn = isLoggedIn;
-                      });*/
-                    });
-                  }),
+            Consumer<AppRoot>(
+              builder: (context, appRoot, child) {
+                print("rebuild login menu");
+                return Visibility(
+                  visible: !appRoot.isLoggedIn,
+                  child: ListTile(
+                      title: Text("Login"),
+                      onTap: () {
+                        //close drawer
+                        Navigator.pop(context);
+                        //open login page
+
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return LoginPage();
+                        })).then((isLoggedIn) {
+                          print("login return : $isLoggedIn");
+                          /*setState(() {
+                        });*/
+                        });
+                      }),
+                );
+              },
             ),
           ],
         ),

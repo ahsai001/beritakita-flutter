@@ -6,6 +6,7 @@ import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:beritakita/src/widgets/color_loader.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("login rebuild");
     return Scaffold(
         appBar: AppBar(title: Text("Login")),
         body: Container(
@@ -88,7 +90,8 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.pop(context); //close loading dialog
                               Navigator.pop(context, true); //close login
                               //use returned data when pop or use code below
-                              AppRoot.of(context)?.isLoggedIn = true;
+                              Provider.of<AppRoot>(context, listen: false)
+                                  .setLoggedIn();
                             });
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -96,7 +99,8 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pop(context); //close loading dialog
                             Navigator.pop(context, false); //close login
                             //use returned data when pop or use code below
-                            AppRoot.of(context)?.isLoggedIn = false;
+                            Provider.of<AppRoot>(context, listen: false)
+                                .setLoggedOut();
                           }
                         });
                       }

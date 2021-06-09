@@ -1,17 +1,15 @@
 import 'package:flutter/widgets.dart';
 
-// ignore: must_be_immutable
-class AppRoot extends InheritedWidget {
+class AppRoot extends ChangeNotifier {
   bool isLoggedIn = false;
 
-  AppRoot({required Widget child}) : super(child: child);
-
-  static AppRoot? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<AppRoot>();
+  void setLoggedIn() {
+    isLoggedIn = true;
+    notifyListeners();
   }
 
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    return true;
+  void setLoggedOut() {
+    isLoggedIn = false;
+    notifyListeners();
   }
 }
