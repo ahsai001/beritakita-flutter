@@ -5,11 +5,13 @@ import 'package:beritakita/src/addnews/models/addnews_response.dart';
 import 'package:beritakita/src/configs/config.dart';
 import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:beritakita/src/utils/login_util.dart';
+import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:beritakita/src/widgets/color_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddNewsPage extends StatefulWidget {
@@ -103,7 +105,24 @@ class _AddNewsPageState extends State<AddNewsPage> {
                               barrierDismissible: false);
 
                           //
-                          _addNews(request)?.then((value) {});
+                          _addNews(request)?.then((value) {
+                            if (value.status == 1) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text("Tambah erita Berhasil")));
+                              Navigator.pop(context); //close loading dialog
+                              Navigator.pop(
+                                  context, true); //close add news page
+                              //use returned data when pop or use code below
+                              Provider.of<AppRoot>(context, listen: false)
+                                  .setLoggedIn();
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text("Tambah berita Gagal")));
+                              Navigator.pop(context); //close loading dialog
+                            }
+                          });
                         }
                       },
                       child: Text("submit")),
@@ -133,15 +152,15 @@ class _AddNewsPageState extends State<AddNewsPage> {
       'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
       'x-packagename': "com.ahsailabs.beritakita",
       'x-platform': "android",
-      'token': loginData.token
+      'x-token': loginData.token
     });
 
-    StreamedResponse response = await mpRequest.send();
+    http.Response response =
+        await http.Response.fromStream(await mpRequest.send());
 
     if (response.statusCode == 200) {
       //print(response.body);
-      return AddNewsResponse.fromJson(
-          String.fromCharCodes(await response.stream.toBytes()));
+      return AddNewsResponse.fromJson(response.body);
     } else {
       throw Exception('Failed to get list.');
     }

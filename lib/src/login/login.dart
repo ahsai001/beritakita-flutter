@@ -98,10 +98,6 @@ class _LoginPageState extends State<LoginPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text("Login Gagal")));
                             Navigator.pop(context); //close loading dialog
-                            Navigator.pop(context, false); //close login
-                            //use returned data when pop or use code below
-                            Provider.of<AppRoot>(context, listen: false)
-                                .setLoggedOut();
                           }
                         });
                       }
