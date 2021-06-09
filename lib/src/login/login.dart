@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 CircleAvatar(
                   child: Icon(Icons.ac_unit),
