@@ -31,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 CircleAvatar(
+                  radius: 50,
                   child: Icon(Icons.ac_unit),
                 ),
                 TextFormField(

@@ -77,8 +77,9 @@ class _HomePageState extends State<HomePage> {
                 //color: Colors.green,
                 child: Stack(children: [
                   Align(
-                      alignment: Alignment.centerRight,
+                      alignment: Alignment.topCenter,
                       child: CircleAvatar(
+                        radius: 50,
                         child: Icon(Icons.ac_unit),
                       )),
                   Align(
@@ -255,7 +256,7 @@ class _HomePageState extends State<HomePage> {
             if (value) {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return AddNewsPage();
-              }));
+              })).then((isSuccess) => {_refreshNews()});
             } else {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return LoginPage();

@@ -119,7 +119,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
                                   context, true); //close add news page
                               //use returned data when pop or use code below
                               Provider.of<AppRoot>(context, listen: false)
-                                  .setLoggedIn();
+                                  .refreshNewsList();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
