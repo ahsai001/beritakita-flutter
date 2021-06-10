@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:beritakita/src/addnews/models/addnews_request.dart';
 import 'package:beritakita/src/addnews/models/addnews_response.dart';
 import 'package:beritakita/src/configs/config.dart';
@@ -9,10 +8,8 @@ import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:beritakita/src/widgets/color_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AddNewsPage extends StatefulWidget {
   @override
@@ -49,7 +46,10 @@ class _AddNewsPageState extends State<AddNewsPage> {
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: "Summary"),
+                  decoration: InputDecoration(
+                      labelText: "Summary", alignLabelWithHint: true),
+                  minLines: 4,
+                  maxLines: 5,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please insert summary";
@@ -71,7 +71,10 @@ class _AddNewsPageState extends State<AddNewsPage> {
                       : Image.file(_image!),
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: "Body"),
+                  decoration: InputDecoration(
+                      labelText: "Body", alignLabelWithHint: true),
+                  minLines: 7,
+                  maxLines: 10,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please insert body";
@@ -88,7 +91,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
                         FormState? _formState = _formKey.currentState;
                         if (_formState?.validate() ?? false) {
                           _formState?.save();
-                          //hit to web service
+                          //show loading indicator
                           showDialog(
                               context: context,
                               builder: (context) {
@@ -104,12 +107,13 @@ class _AddNewsPageState extends State<AddNewsPage> {
                               },
                               barrierDismissible: false);
 
-                          //
+                          //hit to web service
                           _addNews(request)?.then((value) {
+                            print(value);
                             if (value.status == 1) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                      content: Text("Tambah erita Berhasil")));
+                                      content: Text("Tambah berita Berhasil")));
                               Navigator.pop(context); //close loading dialog
                               Navigator.pop(
                                   context, true); //close add news page
@@ -139,16 +143,18 @@ class _AddNewsPageState extends State<AddNewsPage> {
     var mpRequest = http.MultipartRequest(
         'POST', Uri.https(Config.BASE_AUTHORITY, Config.getAddNewsPath()));
     mpRequest.files.add(http.MultipartFile(
-        'photo', _image!.readAsBytes().asStream(), _image!.lengthSync()));
+        'photo', _image!.readAsBytes().asStream(), _image!.lengthSync(),
+        filename: _image!.path.split("/").last)); //filename required
 
     mpRequest.fields['title'] = request.title;
     mpRequest.fields['summary'] = request.summary;
     mpRequest.fields['body'] = request.body;
+    mpRequest.fields['groupcode'] = Config.GROUP_CODE;
 
     LoginData loginData = await LoginUtil.getLoginData();
 
     mpRequest.headers.addAll(<String, String>{
-      'Accept': 'application/json; charset=UTF-8',
+      //'Accept': 'application/json; charset=UTF-8',
       'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
       'x-packagename': "com.ahsailabs.beritakita",
       'x-platform': "android",
