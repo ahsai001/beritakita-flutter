@@ -122,7 +122,11 @@ class _HomePageState extends State<HomePage> {
                                             Provider.of<AppRoot>(context,
                                                     listen: false)
                                                 .setLoggedOut(),
-                                            isLoggedIn()
+                                            isLoggedIn(),
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Logout berhasil"))),
                                           });
                                     },
                                   ),
