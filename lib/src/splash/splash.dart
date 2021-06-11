@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:beritakita/src/home/home.dart';
+import 'package:beritakita/src/latihan/test.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
@@ -9,7 +10,8 @@ class SplashPage extends StatelessWidget {
   startSplash(context) {
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return HomePage(title: "Home");
+        //return HomePage(title: "Home");
+        return TestPage();
       }));
     });
   }
