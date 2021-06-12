@@ -1,5 +1,6 @@
 import 'package:beritakita/src/addnews/addnews.dart';
 import 'package:beritakita/src/home/models/news_response.dart';
+import 'package:beritakita/src/latihan/test.dart';
 import 'package:beritakita/src/newsdetail/news_detail.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:flutter/material.dart';
@@ -57,13 +58,22 @@ class _HomePageState extends State<HomePage> {
                 _refreshIndicatorKey.currentState?.show();
               },
               icon: Icon(Icons.refresh)),
-          PopupMenuButton(itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(child: Text("Menu 1")),
-              PopupMenuItem(child: Text("menu 2")),
-              PopupMenuItem(child: Text("Menu 3")),
-            ];
-          })
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(child: Text("Menu 1"), value: 0),
+                PopupMenuItem(child: Text("Test Page"), value: 1),
+                PopupMenuItem(child: Text("Menu 3"), value: 2),
+              ];
+            },
+            onSelected: (value) {
+              if (value == 1) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return TestPage();
+                }));
+              }
+            },
+          )
         ],
       ),
       drawer: Drawer(
