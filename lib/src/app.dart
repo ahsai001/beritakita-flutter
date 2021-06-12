@@ -1,4 +1,5 @@
 import 'package:beritakita/src/home/home.dart';
+import 'package:beritakita/src/splash/splash.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +14,7 @@ class App extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: HomePage(
-            title: "Home Page",
-          ),
+          home: SplashPage(),
           debugShowCheckedModeBanner: false,
         ));
   }

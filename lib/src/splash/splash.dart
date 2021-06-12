@@ -10,8 +10,7 @@ class SplashPage extends StatelessWidget {
   startSplash(context) {
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        //return HomePage(title: "Home");
-        return TestPage();
+        return HomePage(title: "Home");
       }));
     });
   }
