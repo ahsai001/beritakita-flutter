@@ -21,7 +21,7 @@ class LoginUtil {
   static Future<LoginData> getLoginData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String loginDataJson = sharedPreferences.getString(LOGINDATA) ??
-        LoginData(token: "", name: "", username: "").toJson();
+        LoginData(token: "", name: "guest", username: "guest").toJson();
     LoginData loginData = LoginData.fromJson(loginDataJson);
     return loginData;
   }

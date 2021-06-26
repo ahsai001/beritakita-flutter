@@ -1,6 +1,7 @@
 import 'package:beritakita/src/addnews/addnews.dart';
 import 'package:beritakita/src/home/models/news_response.dart';
 import 'package:beritakita/src/latihan/test.dart';
+import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:beritakita/src/newsdetail/news_detail.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
       GlobalKey<RefreshIndicatorState>();
   Future<NewsResponse>? _newsResponseFuture;
   bool _isLoggedIn = false;
+  LoginData _loginData = LoginData(name: "guest", token: "", username: "guest");
 
   @override
   void initState() {
@@ -36,13 +38,29 @@ class _HomePageState extends State<HomePage> {
     });
 
     isLoggedIn();
+    getLoginData();
+  }
+
+  void checkLogin() {
+    Future<bool> future1 = LoginUtil.isLoggedIn();
+    Future<LoginData> future2 = LoginUtil.getLoginData();
+    var futures = Future.wait([future1, future2]);
+    futures.then((value) => {});
   }
 
   void isLoggedIn() async {
-    _isLoggedIn = await LoginUtil.isLoggedIn();
+    var isLoggedIn = await LoginUtil.isLoggedIn();
     print("method isLoggedIn");
     setState(() {
-      //_isLoggedIn = isLoggedIn;
+      _isLoggedIn = isLoggedIn;
+    });
+  }
+
+  void getLoginData() async {
+    var loginData = await LoginUtil.getLoginData();
+    print("method getLoginData");
+    setState(() {
+      _loginData = loginData;
     });
   }
 
@@ -98,8 +116,8 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("username"),
-                          Text("@username"),
+                          Text(_loginData.name),
+                          Text("@${_loginData.username}"),
                         ],
                       )),
                 ]),
@@ -133,6 +151,7 @@ class _HomePageState extends State<HomePage> {
                                                     listen: false)
                                                 .setLoggedOut(),
                                             isLoggedIn(),
+                                            getLoginData(),
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
                                                     content: Text(
@@ -171,6 +190,7 @@ class _HomePageState extends State<HomePage> {
                         })).then((isLoggedInNow) {
                           print("login return : $isLoggedInNow");
                           isLoggedIn();
+                          getLoginData();
                         });
                       }),
                 );
@@ -277,6 +297,7 @@ class _HomePageState extends State<HomePage> {
               })).then((isLoggedInNow) {
                 print("login return : $isLoggedInNow");
                 isLoggedIn();
+                getLoginData();
               });
             }
           });
