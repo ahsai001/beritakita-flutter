@@ -45,10 +45,18 @@ class _HomePageState extends State<HomePage> {
     Future<bool> future1 = LoginUtil.isLoggedIn();
     Future<LoginData> future2 = LoginUtil.getLoginData();
     List<Object> info = await Future.wait([future1, future2]);
+
+    //rebuild all home widget
     setState(() {
       _isLoggedIn = info[0] as bool;
       _loginData = info[1] as LoginData;
     });
+
+    //rebuild partial widget, use consumer in username widget
+    /*
+    Provider.of<AppRoot>(context, listen: false)
+        .setUsername((info[1] as LoginData).username);
+        */
   }
 
   @override
@@ -105,6 +113,11 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(_loginData.name),
                           Text("@${_loginData.username}"),
+
+                          //use consumer if we use provider
+                          // Consumer<AppRoot>(builder: (context, appRoot, child) {
+                          //   return Text("@${appRoot.username}");
+                          // }),
                         ],
                       )),
                 ]),
