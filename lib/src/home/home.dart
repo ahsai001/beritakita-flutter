@@ -37,30 +37,17 @@ class _HomePageState extends State<HomePage> {
       _refreshIndicatorKey.currentState?.show();
     });
 
-    isLoggedIn();
-    getLoginData();
+    checkLogin();
   }
 
-  void checkLogin() {
+  void checkLogin() async {
+    print("checkLogin start");
     Future<bool> future1 = LoginUtil.isLoggedIn();
     Future<LoginData> future2 = LoginUtil.getLoginData();
-    var futures = Future.wait([future1, future2]);
-    futures.then((value) => {});
-  }
-
-  void isLoggedIn() async {
-    var isLoggedIn = await LoginUtil.isLoggedIn();
-    print("method isLoggedIn");
+    List<Object> info = await Future.wait([future1, future2]);
     setState(() {
-      _isLoggedIn = isLoggedIn;
-    });
-  }
-
-  void getLoginData() async {
-    var loginData = await LoginUtil.getLoginData();
-    print("method getLoginData");
-    setState(() {
-      _loginData = loginData;
+      _isLoggedIn = info[0] as bool;
+      _loginData = info[1] as LoginData;
     });
   }
 
@@ -150,8 +137,7 @@ class _HomePageState extends State<HomePage> {
                                             Provider.of<AppRoot>(context,
                                                     listen: false)
                                                 .setLoggedOut(),
-                                            isLoggedIn(),
-                                            getLoginData(),
+                                            checkLogin(),
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
                                                     content: Text(
@@ -189,8 +175,7 @@ class _HomePageState extends State<HomePage> {
                           return LoginPage();
                         })).then((isLoggedInNow) {
                           print("login return : $isLoggedInNow");
-                          isLoggedIn();
-                          getLoginData();
+                          checkLogin();
                         });
                       }),
                 );
@@ -296,8 +281,7 @@ class _HomePageState extends State<HomePage> {
                 return LoginPage();
               })).then((isLoggedInNow) {
                 print("login return : $isLoggedInNow");
-                isLoggedIn();
-                getLoginData();
+                checkLogin();
               });
             }
           });
