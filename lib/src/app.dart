@@ -1,4 +1,3 @@
-import 'package:beritakita/src/home/home.dart';
 import 'package:beritakita/src/splash/splash.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:flutter/material.dart';

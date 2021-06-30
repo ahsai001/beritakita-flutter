@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:beritakita/src/home/home.dart';
-import 'package:beritakita/src/latihan/test.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
 
-  startSplash(context) {
+  _startSplash(context) {
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
         return HomePage(title: "Home");
@@ -17,7 +16,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    startSplash(context);
+    _startSplash(context);
     return Scaffold(
       backgroundColor: Colors.blue,
       body: Column(
