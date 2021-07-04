@@ -6,6 +6,7 @@ import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:beritakita/src/widgets/color_loader.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -112,12 +113,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<LoginResponse>? _login(LoginRequest request) async {
+    final _packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
         Uri.https(Config.BASE_AUTHORITY, Config.getLoginPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
-          'x-packagename': "com.ahsailabs.beritakita",
+          'x-packagename': _packageInfo.packageName,
           'x-platform': "android"
         },
         body: <String, String>{

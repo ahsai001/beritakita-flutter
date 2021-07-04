@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:beritakita/src/configs/config.dart';
 import 'package:beritakita/src/login/login.dart';
 import 'package:beritakita/src/utils/login_util.dart';
+import 'package:package_info/package_info.dart';
 
 import 'dart:async';
 
@@ -314,12 +315,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<NewsResponse>? _getNewsAll() async {
+    final _packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
         Uri.https(Config.BASE_AUTHORITY, Config.getNewsListPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
-          'x-packagename': "com.ahsailabs.beritakita",
+          'x-packagename': _packageInfo.packageName,
           'x-platform': "android"
         },
         body: <String, String>{

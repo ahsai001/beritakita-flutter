@@ -9,6 +9,7 @@ import 'package:beritakita/src/widgets/color_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
 class AddNewsPage extends StatefulWidget {
@@ -140,6 +141,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
   }
 
   Future<AddNewsResponse>? _addNews(AddNewsRequest request) async {
+    final _packageInfo = await PackageInfo.fromPlatform();
     var mpRequest = http.MultipartRequest(
         'POST', Uri.https(Config.BASE_AUTHORITY, Config.getAddNewsPath()));
     mpRequest.files.add(http.MultipartFile(
@@ -156,7 +158,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
     mpRequest.headers.addAll(<String, String>{
       //'Accept': 'application/json; charset=UTF-8',
       'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
-      'x-packagename': "com.ahsailabs.beritakita",
+      'x-packagename': _packageInfo.packageName,
       'x-platform': "android",
       'x-token': loginData.token
     });

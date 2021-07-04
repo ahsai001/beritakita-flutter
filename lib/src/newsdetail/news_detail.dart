@@ -6,6 +6,7 @@ import 'package:beritakita/src/newsdetail/models/news_detail_response.dart';
 import 'dart:async';
 import 'package:beritakita/src/home/models/news_response.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //we need statefull, because we need use setState
@@ -132,13 +133,14 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
   }
 
   Future<NewsDetailResponse>? _getNewsDetail(String newsId) async {
+    final _packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
         Uri.https(Config.BASE_AUTHORITY,
             Config.getNewsDetailPath().replaceAll("{id}", newsId)),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
-          'x-packagename': "com.ahsailabs.beritakita",
+          'x-packagename': _packageInfo.packageName,
           'x-platform': "android"
         });
 
