@@ -1,3 +1,4 @@
+import 'package:appbar_textfield/appbar_textfield.dart';
 import 'package:beritakita/src/addnews/addnews.dart';
 import 'package:beritakita/src/home/models/news_response.dart';
 import 'package:beritakita/src/latihan/test.dart';
@@ -30,6 +31,8 @@ class _HomePageState extends State<HomePage> {
   Future<NewsResponse>? _newsResponseFuture;
   bool _isLoggedIn = false;
   LoginData _loginData = LoginData(name: "guest", token: "", username: "guest");
+
+  String keyword = "";
 
   @override
   void initState() {
@@ -64,9 +67,21 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     print("home rebuild");
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBarTextField(
         title: Text(widget.title),
-        actions: [
+        onBackPressed: () {
+          keyword = "";
+          _refreshIndicatorKey.currentState?.show();
+        },
+        onClearPressed: () {
+          keyword = "";
+          _refreshIndicatorKey.currentState?.show();
+        },
+        onChanged: (value) {
+          keyword = value;
+          _refreshIndicatorKey.currentState?.show();
+        },
+        trailingActionButtons: [
           IconButton(
               onPressed: () {
                 _refreshIndicatorKey.currentState?.show();
@@ -90,6 +105,32 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      //   actions: [
+      //     IconButton(
+      //         onPressed: () {
+      //           _refreshIndicatorKey.currentState?.show();
+      //         },
+      //         icon: Icon(Icons.refresh)),
+      //     PopupMenuButton(
+      //       itemBuilder: (BuildContext context) {
+      //         return [
+      //           PopupMenuItem(child: Text("Menu 1"), value: 0),
+      //           PopupMenuItem(child: Text("Test Page"), value: 1),
+      //           PopupMenuItem(child: Text("Menu 3"), value: 2),
+      //         ];
+      //       },
+      //       onSelected: (value) {
+      //         if (value == 1) {
+      //           Navigator.push(context, MaterialPageRoute(builder: (context) {
+      //             return TestPage();
+      //           }));
+      //         }
+      //       },
+      //     )
+      //   ],
+      // ),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -326,7 +367,7 @@ class _HomePageState extends State<HomePage> {
         },
         body: <String, String>{
           'groupcode': Config.GROUP_CODE,
-          'keyword': "",
+          'keyword': keyword,
         });
     //print(response.statusCode);
     if (response.statusCode == 200) {
