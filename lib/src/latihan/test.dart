@@ -30,6 +30,7 @@ class _TestPageState extends State<TestPage> {
               ),
               toolbarOptions: ToolbarOptions(copy: true, paste: true),
             ),
+            ElevatedButton(onPressed: () {}, child: Text('click')),
             SwitchListTile(
                 title: Text("Title"),
                 subtitle: Text("Subtitle"),
