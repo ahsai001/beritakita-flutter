@@ -19,7 +19,7 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Test Page"),
+        title: Text("Latihan UI"),
       ),
       body: SafeArea(
         child: ListView(

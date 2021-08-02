@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem(child: Text("Menu 1"), value: 0),
-                PopupMenuItem(child: Text("Test Page"), value: 1),
+                PopupMenuItem(child: Text("Latihan UI"), value: 1),
                 PopupMenuItem(child: Text("Menu 3"), value: 2),
               ];
             },
