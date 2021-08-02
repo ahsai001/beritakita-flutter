@@ -2,7 +2,7 @@
 import 'package:appbar_textfield/appbar_textfield.dart';
 import 'package:beritakita/src/addnews/addnews.dart';
 import 'package:beritakita/src/home/models/news_response.dart';
-import 'package:beritakita/src/latihan/test.dart';
+import 'package:beritakita/src/latihan/latihan_ui.dart';
 import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:beritakita/src/newsdetail/news_detail.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
             onSelected: (value) {
               if (value == 1) {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return TestPage();
+                  return LatihanUiPage();
                 }));
               }
             },

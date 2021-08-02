@@ -2,18 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-class TestPage extends StatefulWidget {
-  const TestPage({Key? key}) : super(key: key);
+class LatihanUiPage extends StatefulWidget {
+  const LatihanUiPage({Key? key}) : super(key: key);
 
   @override
-  _TestPageState createState() => _TestPageState();
+  _LatihanUiPageState createState() => _LatihanUiPageState();
 }
 
-class _TestPageState extends State<TestPage> {
+class _LatihanUiPageState extends State<LatihanUiPage> {
   bool _switchValue = false;
   bool _checkboxValue1 = false;
   bool _checkboxValue2 = false;
-  bool _checkboxValue3 = false;
   int? _radioValue = 1;
   String? _dropdownValue = "IOS";
   @override
@@ -24,6 +23,7 @@ class _TestPageState extends State<TestPage> {
       ),
       body: SafeArea(
         child: ListView(
+          padding: const EdgeInsets.all(14),
           children: [
             Text(
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
@@ -87,17 +87,6 @@ class _TestPageState extends State<TestPage> {
                     _checkboxValue2 = value!;
                   });
                 }),
-            CheckboxListTile(
-                title: Text("Title"),
-                subtitle: Text("Subtitle"),
-                secondary: Text("secondary"),
-                controlAffinity: ListTileControlAffinity.leading,
-                value: _checkboxValue3,
-                onChanged: (value) {
-                  setState(() {
-                    _checkboxValue3 = value!;
-                  });
-                }),
             RadioListTile(
                 title: Text("Title"),
                 subtitle: Text("Subtitle"),
@@ -122,19 +111,6 @@ class _TestPageState extends State<TestPage> {
                   });
                 },
                 groupValue: _radioValue),
-            RadioListTile(
-              title: Text("Title"),
-              subtitle: Text("Subtitle"),
-              secondary: Text("secondary"),
-              controlAffinity: ListTileControlAffinity.leading,
-              value: 3,
-              onChanged: (int? value) {
-                setState(() {
-                  _radioValue = value!;
-                });
-              },
-              groupValue: _radioValue,
-            ),
             DropdownButton<String>(
               items: [
                 DropdownMenuItem(value: "Android", child: Text("Android")),
