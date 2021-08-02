@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class TestPage extends StatefulWidget {
@@ -23,13 +25,33 @@ class _TestPageState extends State<TestPage> {
       body: SafeArea(
         child: ListView(
           children: [
-            Text("Hello Text"),
+            Text(
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+                //textDirection: TextDirection.ltr,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                //softWrap: false,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    backgroundColor: Colors.blue,
+                    color: Colors.red,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    decoration: TextDecoration.lineThrough)),
+            TextField(
+              decoration:
+                  InputDecoration(labelText: "Hello", errorText: "Error Text"),
+              //toolbarOptions: ToolbarOptions(copy: true, paste: true),
+            ),
             TextField(
               decoration: InputDecoration(
-                labelText: "Hello",
-              ),
-              toolbarOptions: ToolbarOptions(copy: true, paste: true),
+                  labelText: "Hello",
+                  helperText: "Helper Text",
+                  counter: Text("3")),
+              //toolbarOptions: ToolbarOptions(copy: true, paste: true),
             ),
+            Image.network('https://picsum.photos/250?image=9'),
             ElevatedButton(onPressed: () {}, child: Text('click')),
             SwitchListTile(
                 title: Text("Title"),
