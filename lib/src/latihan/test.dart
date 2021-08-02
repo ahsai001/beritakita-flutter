@@ -52,6 +52,7 @@ class _TestPageState extends State<TestPage> {
               //toolbarOptions: ToolbarOptions(copy: true, paste: true),
             ),
             Image.network('https://picsum.photos/250?image=9'),
+            Image(image: NetworkImage('https://picsum.photos/250?image=9')),
             ElevatedButton(onPressed: () {}, child: Text('click')),
             SwitchListTile(
                 title: Text("Title"),
