@@ -286,3 +286,42 @@ class NavigatorPane extends StatelessWidget {
     );
   }
 }
+
+class MaterialScaffoldTest extends StatelessWidget {
+  const MaterialScaffoldTest({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Page Title"),
+      ),
+      body: Container(),
+      drawer: Drawer(),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+      ),
+    );
+  }
+}
+
+class CupertinoScaffoldTest extends StatelessWidget {
+  const CupertinoScaffoldTest({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          middle: Text("Cupertino Page"),
+        ),
+        child: CupertinoTabScaffold(
+          tabBar: CupertinoTabBar(items: []),
+          tabBuilder: (context, index) {
+            return Container();
+          },
+        ));
+  }
+}
