@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
-  HomePage({required this.title});
+  const HomePage({Key? key, required this.title}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
