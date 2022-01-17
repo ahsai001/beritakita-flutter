@@ -375,7 +375,9 @@ class _HomePageState extends State<HomePage> {
       print(response.body);
       return NewsResponse.fromJson(response.body);
     } else {
-      throw Exception('Failed to get list.');
+      //throw Exception('Failed to get list.');
+      //or
+      return Future.error("Failed to get list.");
     }
   }
 }
