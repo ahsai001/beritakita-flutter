@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -19,13 +18,13 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Latihan UI"),
+        title: const Text("Latihan UI"),
       ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(14),
           children: [
-            Text(
+            const Text(
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
                 //textDirection: TextDirection.ltr,
                 maxLines: 2,
@@ -39,12 +38,12 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
                     decoration: TextDecoration.lineThrough)),
-            TextField(
+            const TextField(
               decoration:
                   InputDecoration(labelText: "Hello", errorText: "Error Text"),
               //toolbarOptions: ToolbarOptions(copy: true, paste: true),
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                   labelText: "Hello",
                   helperText: "Helper Text",
@@ -53,11 +52,11 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
             ),
             Image.network('https://picsum.photos/250?image=9'),
             //Image(image: NetworkImage('https://picsum.photos/250?image=9')),
-            ElevatedButton(onPressed: () {}, child: Text('click')),
+            ElevatedButton(onPressed: () {}, child: const Text('click')),
             SwitchListTile(
-                title: Text("Title"),
-                subtitle: Text("Subtitle"),
-                secondary: Text("secondary"),
+                title: const Text("Title"),
+                subtitle: const Text("Subtitle"),
+                secondary: const Text("secondary"),
                 controlAffinity: ListTileControlAffinity.leading,
                 value: _switchValue,
                 onChanged: (value) {
@@ -66,9 +65,9 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
                   });
                 }),
             CheckboxListTile(
-                title: Text("Title"),
-                subtitle: Text("Subtitle"),
-                secondary: Text("secondary"),
+                title: const Text("Title"),
+                subtitle: const Text("Subtitle"),
+                secondary: const Text("secondary"),
                 controlAffinity: ListTileControlAffinity.leading,
                 value: _checkboxValue1,
                 onChanged: (value) {
@@ -77,9 +76,9 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
                   });
                 }),
             CheckboxListTile(
-                title: Text("Title"),
-                subtitle: Text("Subtitle"),
-                secondary: Text("secondary"),
+                title: const Text("Title"),
+                subtitle: const Text("Subtitle"),
+                secondary: const Text("secondary"),
                 controlAffinity: ListTileControlAffinity.leading,
                 value: _checkboxValue2,
                 onChanged: (value) {
@@ -88,9 +87,9 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
                   });
                 }),
             RadioListTile(
-                title: Text("Title"),
-                subtitle: Text("Subtitle"),
-                secondary: Text("secondary"),
+                title: const Text("Title"),
+                subtitle: const Text("Subtitle"),
+                secondary: const Text("secondary"),
                 controlAffinity: ListTileControlAffinity.leading,
                 value: 1,
                 onChanged: (int? value) {
@@ -100,9 +99,9 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
                 },
                 groupValue: _radioValue),
             RadioListTile(
-                title: Text("Title"),
-                subtitle: Text("Subtitle"),
-                secondary: Text("secondary"),
+                title: const Text("Title"),
+                subtitle: const Text("Subtitle"),
+                secondary: const Text("secondary"),
                 controlAffinity: ListTileControlAffinity.leading,
                 value: 2,
                 onChanged: (int? value) {
@@ -112,7 +111,7 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
                 },
                 groupValue: _radioValue),
             DropdownButton<String>(
-              items: [
+              items: const [
                 DropdownMenuItem(value: "Android", child: Text("Android")),
                 DropdownMenuItem(value: "IOS", child: Text("IOS")),
                 DropdownMenuItem(value: "Windows", child: Text("Windows")),
@@ -124,9 +123,9 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
                 });
               },
             ),
-            UnconstrainedBox(
-              child: CircularProgressIndicator(),
+            const UnconstrainedBox(
               alignment: Alignment.centerLeft,
+              child: CircularProgressIndicator(),
             ),
           ],
         ),

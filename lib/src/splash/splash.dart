@@ -15,7 +15,7 @@ class _SplashPageState extends State<SplashPage> {
     Timer(const Duration(seconds: 5), () {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) {
-        return HomePage(title: "Home");
+        return const HomePage(title: "Home");
       }));
     });
   }
@@ -42,10 +42,10 @@ class _SplashPageState extends State<SplashPage> {
               fit: BoxFit.contain,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 24.0,
           ),
-          Text(
+          const Text(
             "Berita Kita",
             style: TextStyle(
               color: Colors.white,

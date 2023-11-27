@@ -4,25 +4,27 @@ import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:beritakita/src/utils/login_util.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:beritakita/src/widgets/color_loader.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   LoginRequest request = LoginRequest();
 
   @override
   Widget build(BuildContext context) {
     print("login rebuild");
     return Scaffold(
-        appBar: AppBar(title: Text("Login")),
+        appBar: AppBar(title: const Text("Login")),
         body: Container(
           padding: const EdgeInsets.all(10),
           child: Form(
@@ -31,27 +33,29 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 50,
                   child: Icon(Icons.ac_unit),
                 ),
                 TextFormField(
-                    decoration: InputDecoration(labelText: "Username"),
+                    decoration: const InputDecoration(labelText: "Username"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please insert username";
                       }
+                      return null;
                     },
                     onSaved: (value) {
                       request.username = value!;
                     }),
                 TextFormField(
                   obscureText: true,
-                  decoration: InputDecoration(labelText: "Password"),
+                  decoration: const InputDecoration(labelText: "Password"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please insert password";
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     request.password = value!;
@@ -60,20 +64,20 @@ class _LoginPageState extends State<LoginPage> {
                 Builder(builder: (context) {
                   //we use Builder, if we want to use Form.of()
                   return ElevatedButton(
-                    child: Text("login"),
+                    child: const Text("login"),
                     onPressed: () {
                       //FormState? _formState = _formKey.currentState;
-                      FormState? _formState = Form.of(
+                      FormState? formState = Form.of(
                           context); //to use this, need Builder widget inside Form
-                      if (_formState?.validate() ?? false) {
-                        _formState?.save();
+                      if (formState.validate() ?? false) {
+                        formState.save();
                         //hit to web service
                         showDialog(
                             context: context,
                             builder: (context) {
                               return WillPopScope(
                                   //use this to disable back button
-                                  child: ColorLoader(
+                                  child: const ColorLoader(
                                     radius: 20,
                                     dotRadius: 5,
                                   ),
@@ -88,7 +92,8 @@ class _LoginPageState extends State<LoginPage> {
                         _login(request)?.then((LoginResponse value) {
                           if (value.status == 1) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Login Berhasil")));
+                                const SnackBar(
+                                    content: Text("Login Berhasil")));
                             LoginUtil.saveLoginData(value.data).then((value) {
                               Navigator.pop(context); //close loading dialog
                               Navigator.pop(context, true); //close login
@@ -98,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Login Gagal")));
+                                const SnackBar(content: Text("Login Gagal")));
                             Navigator.pop(context); //close loading dialog
                           }
                         });
@@ -113,13 +118,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<LoginResponse>? _login(LoginRequest request) async {
-    final _packageInfo = await PackageInfo.fromPlatform();
+    final packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
-        Uri.https(Config.BASE_AUTHORITY, Config.getLoginPath()),
+        Uri.http(Config.BASE_AUTHORITY, Config.getLoginPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
-          'x-packagename': _packageInfo.packageName,
+          'x-packagename': packageInfo.packageName,
           'x-platform': "android"
         },
         body: <String, String>{

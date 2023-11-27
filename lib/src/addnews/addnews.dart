@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:beritakita/src/addnews/models/addnews_request.dart';
 import 'package:beritakita/src/addnews/models/addnews_response.dart';
 import 'package:beritakita/src/configs/config.dart';
@@ -6,6 +7,7 @@ import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:beritakita/src/utils/login_util.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:beritakita/src/widgets/color_loader.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -13,12 +15,14 @@ import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
 class AddNewsPage extends StatefulWidget {
+  const AddNewsPage({super.key});
+
   @override
   _AddNewsPageState createState() => _AddNewsPageState();
 }
 
 class _AddNewsPageState extends State<AddNewsPage> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AddNewsRequest request = AddNewsRequest();
   File? _image;
   final picker = ImagePicker();
@@ -26,7 +30,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Add News")),
+      appBar: AppBar(title: const Text("Add News")),
       body: Container(
         padding: const EdgeInsets.all(10),
         child: Form(
@@ -36,18 +40,19 @@ class _AddNewsPageState extends State<AddNewsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
-                  decoration: InputDecoration(labelText: "Title"),
+                  decoration: const InputDecoration(labelText: "Title"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please insert title";
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     request.title = value!;
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       labelText: "Summary", alignLabelWithHint: true),
                   minLines: 4,
                   maxLines: 5,
@@ -55,24 +60,25 @@ class _AddNewsPageState extends State<AddNewsPage> {
                     if (value == null || value.isEmpty) {
                       return "Please insert summary";
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     request.summary = value!;
                   },
                 ),
                 OutlinedButton(
-                  child: Text("photo"),
+                  child: const Text("photo"),
                   onPressed: () {
                     _showImagePicker();
                   },
                 ),
                 Center(
                   child: _image == null
-                      ? Text('No image selected.')
+                      ? const Text('No image selected.')
                       : Image.file(_image!),
                 ),
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       labelText: "Body", alignLabelWithHint: true),
                   minLines: 7,
                   maxLines: 10,
@@ -80,6 +86,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
                     if (value == null || value.isEmpty) {
                       return "Please insert body";
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     request.body = value!;
@@ -89,16 +96,16 @@ class _AddNewsPageState extends State<AddNewsPage> {
                   width: 400,
                   child: ElevatedButton(
                       onPressed: () {
-                        FormState? _formState = _formKey.currentState;
-                        if (_formState?.validate() ?? false) {
-                          _formState?.save();
+                        FormState? formState = _formKey.currentState;
+                        if (formState?.validate() ?? false) {
+                          formState?.save();
                           //show loading indicator
                           showDialog(
                               context: context,
                               builder: (context) {
                                 return WillPopScope(
                                     //use this to disable back button
-                                    child: ColorLoader(
+                                    child: const ColorLoader(
                                       radius: 20,
                                       dotRadius: 5,
                                     ),
@@ -110,10 +117,12 @@ class _AddNewsPageState extends State<AddNewsPage> {
 
                           //hit to web service
                           _addNews(request)?.then((value) {
-                            print(value);
+                            if (kDebugMode) {
+                              print(value);
+                            }
                             if (value.status == 1) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                       content: Text("Tambah berita Berhasil")));
                               Navigator.pop(context); //close loading dialog
                               Navigator.pop(
@@ -123,14 +132,14 @@ class _AddNewsPageState extends State<AddNewsPage> {
                                   .refreshNewsList();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                       content: Text("Tambah berita Gagal")));
                               Navigator.pop(context); //close loading dialog
                             }
                           });
                         }
                       },
-                      child: Text("submit")),
+                      child: const Text("submit")),
                 )
               ],
             ),
@@ -141,9 +150,9 @@ class _AddNewsPageState extends State<AddNewsPage> {
   }
 
   Future<AddNewsResponse>? _addNews(AddNewsRequest request) async {
-    final _packageInfo = await PackageInfo.fromPlatform();
+    final packageInfo = await PackageInfo.fromPlatform();
     var mpRequest = http.MultipartRequest(
-        'POST', Uri.https(Config.BASE_AUTHORITY, Config.getAddNewsPath()));
+        'POST', Uri.http(Config.BASE_AUTHORITY, Config.getAddNewsPath()));
     mpRequest.files.add(http.MultipartFile(
         'photo', _image!.readAsBytes().asStream(), _image!.lengthSync(),
         filename: _image!.path.split("/").last)); //filename required
@@ -158,7 +167,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
     mpRequest.headers.addAll(<String, String>{
       //'Accept': 'application/json; charset=UTF-8',
       'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
-      'x-packagename': _packageInfo.packageName,
+      'x-packagename': packageInfo.packageName,
       'x-platform': "android",
       'x-token': loginData.token
     });
@@ -179,26 +188,24 @@ class _AddNewsPageState extends State<AddNewsPage> {
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Gallery'),
-                      onTap: () {
-                        _imgFromGallery();
-                        Navigator.of(context).pop();
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Gallery'),
                     onTap: () {
-                      _imgFromCamera();
+                      _imgFromGallery();
                       Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Camera'),
+                  onTap: () {
+                    _imgFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
           );
         });

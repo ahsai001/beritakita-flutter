@@ -92,8 +92,9 @@ class LoginData {
   }
 
   factory LoginData.fromMap(Map<String, dynamic>? map) {
-    if (map == null || map.isEmpty)
+    if (map == null || map.isEmpty) {
       return LoginData(token: "", name: "guest", username: "guest");
+    }
 
     return LoginData(
       token: map['token'],

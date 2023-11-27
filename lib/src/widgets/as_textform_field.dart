@@ -7,7 +7,7 @@ class ASTextFormField extends StatelessWidget {
   final bool isPassword;
   final bool isEmail;
 
-  ASTextFormField({
+  const ASTextFormField({super.key, 
     required this.hintText,
     required this.validator,
     required this.onSaved,
@@ -18,11 +18,11 @@ class ASTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: TextFormField(
         decoration: InputDecoration(
           hintText: hintText,
-          contentPadding: EdgeInsets.all(15.0),
+          contentPadding: const EdgeInsets.all(15.0),
           border: InputBorder.none,
           filled: true,
           fillColor: Colors.grey[200],

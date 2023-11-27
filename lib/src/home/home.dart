@@ -1,21 +1,18 @@
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:appbar_textfield/appbar_textfield.dart';
+import 'dart:async';
+
 import 'package:beritakita/src/addnews/addnews.dart';
+import 'package:beritakita/src/configs/config.dart';
 import 'package:beritakita/src/home/models/news_response.dart';
-import 'package:beritakita/src/latihan/latihan_ui.dart';
+import 'package:beritakita/src/login/login.dart';
 import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:beritakita/src/newsdetail/news_detail.dart';
+import 'package:beritakita/src/utils/login_util.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
-import 'package:beritakita/src/configs/config.dart';
-import 'package:beritakita/src/login/login.dart';
-import 'package:beritakita/src/utils/login_util.dart';
 import 'package:package_info/package_info.dart';
-
-import 'dart:async';
-
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _refreshIndicatorKey.currentState?.show();
     });
 
@@ -66,49 +63,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print("home rebuild");
+    if (kDebugMode) {
+      print("home rebuild");
+    }
     return Scaffold(
-      appBar: AppBarTextField(
-        title: Text(widget.title),
-        onBackPressed: () {
-          keyword = "";
-          _refreshIndicatorKey.currentState?.show();
-        },
-        onClearPressed: () {
-          keyword = "";
-          _refreshIndicatorKey.currentState?.show();
-        },
-        onChanged: (value) {
-          keyword = value;
-          _refreshIndicatorKey.currentState?.show();
-        },
-        trailingActionButtons: [
-          IconButton(
-              onPressed: () {
-                _refreshIndicatorKey.currentState?.show();
-              },
-              icon: Icon(Icons.refresh)),
-          PopupMenuButton(
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(child: Text("Menu 1"), value: 0),
-                PopupMenuItem(child: Text("Latihan UI"), value: 1),
-                PopupMenuItem(child: Text("Menu 3"), value: 2),
-              ];
-            },
-            onSelected: (value) {
-              if (value == 1) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return LatihanUiPage();
-                }));
-              }
-            },
-          )
-        ],
-      ),
-      // appBar: AppBar(
+      // appBar: AppBarTextField(
       //   title: Text(widget.title),
-      //   actions: [
+      //   onBackPressed: () {
+      //     keyword = "";
+      //     _refreshIndicatorKey.currentState?.show();
+      //   },
+      //   onClearPressed: () {
+      //     keyword = "";
+      //     _refreshIndicatorKey.currentState?.show();
+      //   },
+      //   onChanged: (value) {
+      //     keyword = value;
+      //     _refreshIndicatorKey.currentState?.show();
+      //   },
+      //   trailingActionButtons: [
       //     IconButton(
       //         onPressed: () {
       //           _refreshIndicatorKey.currentState?.show();
@@ -118,75 +91,99 @@ class _HomePageState extends State<HomePage> {
       //       itemBuilder: (BuildContext context) {
       //         return [
       //           PopupMenuItem(child: Text("Menu 1"), value: 0),
-      //           PopupMenuItem(child: Text("Test Page"), value: 1),
+      //           PopupMenuItem(child: Text("Latihan UI"), value: 1),
       //           PopupMenuItem(child: Text("Menu 3"), value: 2),
       //         ];
       //       },
       //       onSelected: (value) {
       //         if (value == 1) {
       //           Navigator.push(context, MaterialPageRoute(builder: (context) {
-      //             return TestPage();
+      //             return LatihanUiPage();
       //           }));
       //         }
       //       },
       //     )
       //   ],
       // ),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () {
+                _refreshIndicatorKey.currentState?.show();
+              },
+              icon: const Icon(Icons.refresh)),
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return [
+                const PopupMenuItem(value: 0, child: Text("Menu 1")),
+                const PopupMenuItem(value: 1, child: Text("Test Page")),
+                const PopupMenuItem(value: 2, child: Text("Menu 3")),
+              ];
+            },
+            onSelected: (value) {
+              if (value == 1) {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return TestPage();
+                // }));
+              }
+            },
+          )
+        ],
+      ),
       drawer: Drawer(
         child: ListView(
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Container(
-                //color: Colors.green,
-                child: Stack(children: [
-                  Align(
-                      alignment: Alignment.topCenter,
-                      child: CircleAvatar(
-                        radius: 50,
-                        child: Icon(Icons.ac_unit),
-                      )),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(_loginData.name),
-                          Text("@${_loginData.username}"),
+              child: Stack(children: [
+                const Align(
+                    alignment: Alignment.topCenter,
+                    child: CircleAvatar(
+                      radius: 50,
+                      child: Icon(Icons.ac_unit),
+                    )),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(_loginData.name),
+                        Text("@${_loginData.username}"),
 
-                          //use consumer if we use provider
-                          // Consumer<AppRoot>(builder: (context, appRoot, child) {
-                          //   return Text("@${appRoot.username}");
-                          // }),
-                        ],
-                      )),
-                ]),
-              ),
+                        //use consumer if we use provider
+                        // Consumer<AppRoot>(builder: (context, appRoot, child) {
+                        //   return Text("@${appRoot.username}");
+                        // }),
+                      ],
+                    )),
+              ]),
             ),
             Visibility(
                 visible: false,
-                child: ListTile(title: Text("Home"), onTap: () {})),
+                child: ListTile(title: const Text("Home"), onTap: () {})),
             Consumer<AppRoot>(
               builder: (context, appRoot, child) {
                 print("rebuild logout menu");
                 return Visibility(
                   visible: _isLoggedIn,
                   child: ListTile(
-                      title: Text("Logout"),
+                      title: const Text("Logout"),
                       onTap: () {
                         Navigator.of(context).pop();
                         showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Logout Confirmation'),
-                                content: Text("Are you sure want to logout?"),
+                                title: const Text('Logout Confirmation'),
+                                content:
+                                    const Text("Are you sure want to logout?"),
                                 actions: [
                                   ElevatedButton(
-                                    child: Text('yes'),
+                                    child: const Text('yes'),
                                     onPressed: () {
                                       Navigator.pop(context);
                                       LoginUtil.logout().then((value) => {
@@ -195,14 +192,14 @@ class _HomePageState extends State<HomePage> {
                                                 .setLoggedOut(),
                                             checkLogin(),
                                             ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
+                                                .showSnackBar(const SnackBar(
                                                     content: Text(
                                                         "Logout berhasil"))),
                                           });
                                     },
                                   ),
                                   ElevatedButton(
-                                    child: Text('cancel'),
+                                    child: const Text('cancel'),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
@@ -220,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                 return Visibility(
                   visible: !_isLoggedIn,
                   child: ListTile(
-                      title: Text("Login"),
+                      title: const Text("Login"),
                       onTap: () {
                         //close drawer
                         Navigator.pop(context);
@@ -228,7 +225,7 @@ class _HomePageState extends State<HomePage> {
 
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return LoginPage();
+                          return const LoginPage();
                         })).then((isLoggedInNow) {
                           print("login return : $isLoggedInNow");
                           checkLogin();
@@ -289,7 +286,7 @@ class _HomePageState extends State<HomePage> {
                                                   title: Text(news.title,
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .subtitle1
+                                                          .titleMedium
                                                           ?.apply(
                                                               color:
                                                                   Colors.white,
@@ -299,7 +296,7 @@ class _HomePageState extends State<HomePage> {
                                                   subtitle: Text(news.summary,
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .subtitle2
+                                                          .titleSmall
                                                           ?.apply(
                                                               color: Colors
                                                                   .white)))))),
@@ -310,7 +307,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       });
                 } else {
-                  return Center(
+                  return const Center(
                     child: Text("Ooops data kosong"),
                   );
                 }
@@ -320,7 +317,7 @@ class _HomePageState extends State<HomePage> {
                 );
               }
 
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }),
@@ -330,11 +327,11 @@ class _HomePageState extends State<HomePage> {
           LoginUtil.isLoggedIn().then((value) {
             if (value) {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return AddNewsPage();
+                return const AddNewsPage();
               })).then((isSuccess) => {_refreshNews()});
             } else {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return LoginPage();
+                return const LoginPage();
               })).then((isLoggedInNow) {
                 print("login return : $isLoggedInNow");
                 checkLogin();
@@ -342,8 +339,8 @@ class _HomePageState extends State<HomePage> {
             }
           });
         },
-        child: const Icon(Icons.add),
         backgroundColor: Colors.green,
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -357,13 +354,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<NewsResponse>? _getNewsAll() async {
-    final _packageInfo = await PackageInfo.fromPlatform();
+    final packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
-        Uri.https(Config.BASE_AUTHORITY, Config.getNewsListPath()),
+        Uri.http(Config.BASE_AUTHORITY, Config.getNewsListPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
-          'x-packagename': _packageInfo.packageName,
+          'x-packagename': packageInfo.packageName,
           'x-platform': "android"
         },
         body: <String, String>{

@@ -1,5 +1,5 @@
 class Config {
-  static const String BASE_AUTHORITY = "api.zaitunlabs.com";
+  static const String BASE_AUTHORITY = "7bf2-182-0-191-105.ngrok-free.app";
   //static const String BASE_AUTHORITY = "192.168.43.172:8080";
   //https://flutter.dev/docs/release/breaking-changes/network-policy-ios-android
 
@@ -8,19 +8,19 @@ class Config {
   static const String GROUP_CODE = "ABJAL1";
 
   static String getLoginPath() {
-    return BASE_PATH + "login";
+    return "${BASE_PATH}login";
   }
 
   static String getNewsListPath() {
-    return BASE_PATH + "news/all";
+    return "${BASE_PATH}news/all";
   }
 
   static String getNewsDetailPath() {
-    return BASE_PATH + "news/detail/{id}";
+    return "${BASE_PATH}news/detail/{id}";
   }
 
   static String getAddNewsPath() {
-    return BASE_PATH + "news/add";
+    return "${BASE_PATH}news/add";
   }
 
   static const String APP_PREFERENCES = "beritakita_preferences";

@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:beritakita/src/configs/config.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:http/http.dart' as http;
-import 'package:beritakita/src/newsdetail/models/news_detail_response.dart';
 import 'dart:async';
+
+import 'package:beritakita/src/configs/config.dart';
 import 'package:beritakita/src/home/models/news_response.dart';
+import 'package:beritakita/src/newsdetail/models/news_detail_response.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,7 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 class NewsDetailPage extends StatefulWidget {
   final News? news;
 
-  NewsDetailPage({required this.news});
+  const NewsDetailPage({super.key, required this.news});
 
   @override
   _NewsDetailPageState createState() => _NewsDetailPageState();
@@ -34,7 +35,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
-        actions: [],
+        actions: const [],
         automaticallyImplyLeading: true,
       ),
       body: FutureBuilder(
@@ -44,7 +45,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               NewsDetail data = (snapshot.data as NewsDetailResponse).data;
 
               //update title appbar
-              SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+              SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
                 setState(() {
                   _title = data.title;
                 });
@@ -56,7 +57,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                   Image.network(data.photo,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
@@ -65,12 +66,12 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                         Text(data.created_by,
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle1
+                                .titleMedium
                                 ?.apply(fontSizeDelta: 4)),
                         Text(data.created_at,
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle2
+                                .titleSmall
                                 ?.apply(fontSizeDelta: 2))
                       ]),
                   Stack(children: [
@@ -79,7 +80,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                       child: Text(data.created_by,
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle1
+                              .titleMedium
                               ?.apply(fontSizeDelta: 4)),
                     ),
                     Align(
@@ -87,18 +88,18 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                         child: Text(data.created_at,
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle2
+                                .titleSmall
                                 ?.apply(fontSizeDelta: 2))),
                   ]),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Text(data.title,
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle1
+                          .titleMedium
                           ?.apply(fontSizeDelta: 4)),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Linkify(
@@ -112,7 +113,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                       text: data.body,
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle2
+                          .titleSmall
                           ?.apply(fontSizeDelta: 2)),
                   // Text(data.body,
                   //     style: Theme.of(context)
@@ -127,20 +128,20 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               );
             }
 
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }),
     );
   }
 
   Future<NewsDetailResponse>? _getNewsDetail(String newsId) async {
-    final _packageInfo = await PackageInfo.fromPlatform();
+    final packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
-        Uri.https(Config.BASE_AUTHORITY,
+        Uri.http(Config.BASE_AUTHORITY,
             Config.getNewsDetailPath().replaceAll("{id}", newsId)),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
-          'x-packagename': _packageInfo.packageName,
+          'x-packagename': packageInfo.packageName,
           'x-platform': "android"
         });
 
