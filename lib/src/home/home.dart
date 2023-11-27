@@ -356,7 +356,7 @@ class _HomePageState extends State<HomePage> {
   Future<NewsResponse>? _getNewsAll() async {
     final packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
-        Uri.http(Config.BASE_AUTHORITY, Config.getNewsListPath()),
+        Uri.https(Config.BASE_AUTHORITY, Config.getNewsListPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',

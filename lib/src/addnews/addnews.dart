@@ -152,7 +152,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
   Future<AddNewsResponse>? _addNews(AddNewsRequest request) async {
     final packageInfo = await PackageInfo.fromPlatform();
     var mpRequest = http.MultipartRequest(
-        'POST', Uri.http(Config.BASE_AUTHORITY, Config.getAddNewsPath()));
+        'POST', Uri.https(Config.BASE_AUTHORITY, Config.getAddNewsPath()));
     mpRequest.files.add(http.MultipartFile(
         'photo', _image!.readAsBytes().asStream(), _image!.lengthSync(),
         filename: _image!.path.split("/").last)); //filename required

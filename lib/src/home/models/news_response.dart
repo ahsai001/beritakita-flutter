@@ -113,7 +113,7 @@ class News {
       id: map['id'],
       title: map['title'],
       summary: map['summary'],
-      photo: map['photo'],
+      photo: map['photo'] ?? "",
       created_at: map['created_at'],
       created_by: map['created_by'],
     );

@@ -1,5 +1,5 @@
 class Config {
-  static const String BASE_AUTHORITY = "7bf2-182-0-191-105.ngrok-free.app";
+  static const String BASE_AUTHORITY = "a82e-182-0-191-105.ngrok-free.app";
   //static const String BASE_AUTHORITY = "192.168.43.172:8080";
   //https://flutter.dev/docs/release/breaking-changes/network-policy-ios-android
 

@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<LoginResponse>? _login(LoginRequest request) async {
     final packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
-        Uri.http(Config.BASE_AUTHORITY, Config.getLoginPath()),
+        Uri.https(Config.BASE_AUTHORITY, Config.getLoginPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
