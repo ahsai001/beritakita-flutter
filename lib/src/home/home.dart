@@ -250,7 +250,7 @@ class _HomePageState extends State<HomePage> {
                       itemCount: data.length,
                       itemBuilder: (context, index) {
                         News news = data.elementAt(index);
-                        return GestureDetector(
+                        return InkWell(
                           onTap: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text("Item $index clicked")));
@@ -271,10 +271,13 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(news.photo,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        fit: BoxFit.cover),
+                                    child: news.photo.isNotEmpty
+                                        ? Image.network(news.photo,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            fit: BoxFit.cover)
+                                        : null,
                                   ),
                                   Align(
                                       alignment: Alignment.bottomLeft,
