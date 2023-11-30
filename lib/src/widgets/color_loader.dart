@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class ColorLoader extends StatefulWidget {
   final double radius;
@@ -13,9 +14,9 @@ class ColorLoader extends StatefulWidget {
 
 class _ColorLoaderState extends State<ColorLoader>
     with SingleTickerProviderStateMixin {
-  late Animation<double> animation_rotation;
-  late Animation<double> animation_radius_in;
-  late Animation<double> animation_radius_out;
+  late Animation<double> animationRotation;
+  late Animation<double> animationRadiusIn;
+  late Animation<double> animationRadiusOut;
   late AnimationController controller;
 
   late double radius;
@@ -36,21 +37,21 @@ class _ColorLoaderState extends State<ColorLoader>
         duration: const Duration(milliseconds: 3000),
         vsync: this);
 
-    animation_rotation = Tween(begin: 0.0, end: 1.0).animate(
+    animationRotation = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
         curve: const Interval(0.0, 1.0, curve: Curves.linear),
       ),
     );
 
-    animation_radius_in = Tween(begin: 1.0, end: 0.0).animate(
+    animationRadiusIn = Tween(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
         parent: controller,
         curve: const Interval(0.75, 1.0, curve: Curves.elasticIn),
       ),
     );
 
-    animation_radius_out = Tween(begin: 0.0, end: 1.0).animate(
+    animationRadiusOut = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
         curve: const Interval(0.0, 0.25, curve: Curves.elasticOut),
@@ -60,9 +61,10 @@ class _ColorLoaderState extends State<ColorLoader>
     controller.addListener(() {
       setState(() {
         if (controller.value >= 0.75 && controller.value <= 1.0) {
-          radius = widget.radius * animation_radius_in.value;
-        } else if (controller.value >= 0.0 && controller.value <= 0.25)
-          radius = widget.radius * animation_radius_out.value;
+          radius = widget.radius * animationRadiusIn.value;
+        } else if (controller.value >= 0.0 && controller.value <= 0.25) {
+          radius = widget.radius * animationRadiusOut.value;
+        }
       });
     });
 
@@ -81,7 +83,7 @@ class _ColorLoaderState extends State<ColorLoader>
       //color: Colors.black12,
       child: Center(
         child: RotationTransition(
-          turns: animation_rotation,
+          turns: animationRotation,
           child: Container(
             //color: Colors.limeAccent,
             child: Center(

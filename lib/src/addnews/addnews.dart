@@ -18,7 +18,7 @@ class AddNewsPage extends StatefulWidget {
   const AddNewsPage({super.key});
 
   @override
-  _AddNewsPageState createState() => _AddNewsPageState();
+  State<AddNewsPage> createState() => _AddNewsPageState();
 }
 
 class _AddNewsPageState extends State<AddNewsPage> {
@@ -116,7 +116,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
                               barrierDismissible: false);
 
                           //hit to web service
-                          _addNews(request)?.then((value) {
+                          _addNews(request).then((value) {
                             if (kDebugMode) {
                               print(value);
                             }
@@ -149,10 +149,10 @@ class _AddNewsPageState extends State<AddNewsPage> {
     );
   }
 
-  Future<AddNewsResponse>? _addNews(AddNewsRequest request) async {
+  Future<AddNewsResponse> _addNews(AddNewsRequest request) async {
     final packageInfo = await PackageInfo.fromPlatform();
     var mpRequest = http.MultipartRequest(
-        'POST', Uri.https(Config.BASE_AUTHORITY, Config.getAddNewsPath()));
+        'POST', Uri.https(Config.baseAuthority, Config.getAddNewsPath()));
     mpRequest.files.add(http.MultipartFile(
         'photo', _image!.readAsBytes().asStream(), _image!.lengthSync(),
         filename: _image!.path.split("/").last)); //filename required
@@ -160,7 +160,7 @@ class _AddNewsPageState extends State<AddNewsPage> {
     mpRequest.fields['title'] = request.title;
     mpRequest.fields['summary'] = request.summary;
     mpRequest.fields['body'] = request.body;
-    mpRequest.fields['groupcode'] = Config.GROUP_CODE;
+    mpRequest.fields['groupcode'] = Config.groupCode;
 
     LoginData loginData = await LoginUtil.getLoginData();
 
@@ -212,27 +212,31 @@ class _AddNewsPageState extends State<AddNewsPage> {
   }
 
   Future<void> _imgFromCamera() async {
-    PickedFile? pickedFile =
-        await picker.getImage(source: ImageSource.camera, imageQuality: 50);
+    XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
       } else {
-        print('No image selected.');
+        if (kDebugMode) {
+          print('No image selected.');
+        }
       }
     });
   }
 
   Future<void> _imgFromGallery() async {
-    PickedFile? pickedFile =
-        await picker.getImage(source: ImageSource.gallery, imageQuality: 50);
+    XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
       } else {
-        print('No image selected.');
+        if (kDebugMode) {
+          print('No image selected.');
+        }
       }
     });
   }

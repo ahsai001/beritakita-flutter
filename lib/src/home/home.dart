@@ -3,11 +3,14 @@ import 'dart:async';
 import 'package:beritakita/src/addnews/addnews.dart';
 import 'package:beritakita/src/configs/config.dart';
 import 'package:beritakita/src/home/models/news_response.dart';
+import 'package:beritakita/src/latihan/latihan_ui.dart';
 import 'package:beritakita/src/login/login.dart';
 import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:beritakita/src/newsdetail/news_detail.dart';
 import 'package:beritakita/src/utils/login_util.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
+import 'package:beritakita/src/widgets/appbar_textfield.dart';
+import 'package:beritakita/src/widgets/custom_loading.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -20,7 +23,7 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -43,7 +46,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void checkLogin() async {
-    print("checkLogin start");
+    if (kDebugMode) {
+      print("checkLogin start");
+    }
     Future<bool> future1 = LoginUtil.isLoggedIn();
     Future<LoginData> future2 = LoginUtil.getLoginData();
     List<Object> info = await Future.wait([future1, future2]);
@@ -67,47 +72,21 @@ class _HomePageState extends State<HomePage> {
       print("home rebuild");
     }
     return Scaffold(
-      // appBar: AppBarTextField(
-      //   title: Text(widget.title),
-      //   onBackPressed: () {
-      //     keyword = "";
-      //     _refreshIndicatorKey.currentState?.show();
-      //   },
-      //   onClearPressed: () {
-      //     keyword = "";
-      //     _refreshIndicatorKey.currentState?.show();
-      //   },
-      //   onChanged: (value) {
-      //     keyword = value;
-      //     _refreshIndicatorKey.currentState?.show();
-      //   },
-      //   trailingActionButtons: [
-      //     IconButton(
-      //         onPressed: () {
-      //           _refreshIndicatorKey.currentState?.show();
-      //         },
-      //         icon: Icon(Icons.refresh)),
-      //     PopupMenuButton(
-      //       itemBuilder: (BuildContext context) {
-      //         return [
-      //           PopupMenuItem(child: Text("Menu 1"), value: 0),
-      //           PopupMenuItem(child: Text("Latihan UI"), value: 1),
-      //           PopupMenuItem(child: Text("Menu 3"), value: 2),
-      //         ];
-      //       },
-      //       onSelected: (value) {
-      //         if (value == 1) {
-      //           Navigator.push(context, MaterialPageRoute(builder: (context) {
-      //             return LatihanUiPage();
-      //           }));
-      //         }
-      //       },
-      //     )
-      //   ],
-      // ),
-      appBar: AppBar(
+      appBar: AppBarTextField(
         title: Text(widget.title),
-        actions: [
+        onBackPressed: () {
+          keyword = "";
+          _refreshIndicatorKey.currentState?.show();
+        },
+        onClearPressed: () {
+          keyword = "";
+          _refreshIndicatorKey.currentState?.show();
+        },
+        onChanged: (value) {
+          keyword = value;
+          _refreshIndicatorKey.currentState?.show();
+        },
+        trailingActionButtons: [
           IconButton(
               onPressed: () {
                 _refreshIndicatorKey.currentState?.show();
@@ -117,20 +96,46 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (BuildContext context) {
               return [
                 const PopupMenuItem(value: 0, child: Text("Menu 1")),
-                const PopupMenuItem(value: 1, child: Text("Test Page")),
+                const PopupMenuItem(value: 1, child: Text("Latihan UI")),
                 const PopupMenuItem(value: 2, child: Text("Menu 3")),
               ];
             },
             onSelected: (value) {
               if (value == 1) {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //   return TestPage();
-                // }));
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const LatihanUiPage();
+                }));
               }
             },
           )
         ],
       ),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      //   actions: [
+      //     IconButton(
+      //         onPressed: () {
+      //           _refreshIndicatorKey.currentState?.show();
+      //         },
+      //         icon: const Icon(Icons.refresh)),
+      //     PopupMenuButton(
+      //       itemBuilder: (BuildContext context) {
+      //         return [
+      //           const PopupMenuItem(value: 0, child: Text("Menu 1")),
+      //           const PopupMenuItem(value: 1, child: Text("Test Page")),
+      //           const PopupMenuItem(value: 2, child: Text("Menu 3")),
+      //         ];
+      //       },
+      //       onSelected: (value) {
+      //         if (value == 1) {
+      //           Navigator.push(context, MaterialPageRoute(builder: (context) {
+      //             return const LatihanUiPage();
+      //           }));
+      //         }
+      //       },
+      //     )
+      //   ],
+      // ),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -167,7 +172,9 @@ class _HomePageState extends State<HomePage> {
                 child: ListTile(title: const Text("Home"), onTap: () {})),
             Consumer<AppRoot>(
               builder: (context, appRoot, child) {
-                print("rebuild logout menu");
+                if (kDebugMode) {
+                  print("rebuild logout menu");
+                }
                 return Visibility(
                   visible: _isLoggedIn,
                   child: ListTile(
@@ -213,7 +220,9 @@ class _HomePageState extends State<HomePage> {
             ),
             Consumer<AppRoot>(
               builder: (context, appRoot, child) {
-                print("rebuild login menu");
+                if (kDebugMode) {
+                  print("rebuild login menu");
+                }
                 return Visibility(
                   visible: !_isLoggedIn,
                   child: ListTile(
@@ -227,7 +236,9 @@ class _HomePageState extends State<HomePage> {
                             MaterialPageRoute(builder: (context) {
                           return const LoginPage();
                         })).then((isLoggedInNow) {
-                          print("login return : $isLoggedInNow");
+                          if (kDebugMode) {
+                            print("login return : $isLoggedInNow");
+                          }
                           checkLogin();
                         });
                       }),
@@ -271,8 +282,8 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: news.photo.isNotEmpty
-                                        ? Image.network(news.photo,
+                                    child: (news.photo?.isNotEmpty ?? false)
+                                        ? Image.network(news.photo!,
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
@@ -286,7 +297,7 @@ class _HomePageState extends State<HomePage> {
                                           child: Container(
                                               color: Colors.black,
                                               child: ListTile(
-                                                  title: Text(news.title,
+                                                  title: Text(news.title ?? "-",
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .titleMedium
@@ -296,7 +307,8 @@ class _HomePageState extends State<HomePage> {
                                                               fontSizeDelta: 2,
                                                               fontWeightDelta:
                                                                   4)),
-                                                  subtitle: Text(news.summary,
+                                                  subtitle: Text(
+                                                      news.summary ?? "-",
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .titleSmall
@@ -321,7 +333,7 @@ class _HomePageState extends State<HomePage> {
               }
 
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CustomLoader(),
               );
             }),
       ),
@@ -336,7 +348,9 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const LoginPage();
               })).then((isLoggedInNow) {
-                print("login return : $isLoggedInNow");
+                if (kDebugMode) {
+                  print("login return : $isLoggedInNow");
+                }
                 checkLogin();
               });
             }
@@ -349,17 +363,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<NewsResponse?> _refreshNews() async {
-    print("run refresh news");
+    if (kDebugMode) {
+      print("run refresh news");
+    }
     setState(() {
       _newsResponseFuture = _getNewsAll();
     });
     return _newsResponseFuture;
   }
 
-  Future<NewsResponse>? _getNewsAll() async {
+  Future<NewsResponse> _getNewsAll() async {
     final packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
-        Uri.https(Config.BASE_AUTHORITY, Config.getNewsListPath()),
+        Uri.https(Config.baseAuthority, Config.getNewsListPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
@@ -367,13 +383,15 @@ class _HomePageState extends State<HomePage> {
           'x-platform': "android"
         },
         body: <String, String>{
-          'groupcode': Config.GROUP_CODE,
+          'groupcode': Config.groupCode,
           'keyword': keyword,
         });
     //print(response.statusCode);
     if (response.statusCode == 200) {
-      print(response.body);
-      return NewsResponse.fromJson(response.body);
+      if (kDebugMode) {
+        print(response.body);
+      }
+      return newsResponseFromJson(response.body);
     } else {
       //throw Exception('Failed to get list.');
       //or

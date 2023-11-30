@@ -2,25 +2,25 @@ import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginUtil {
-  static const String ISLOGGEDIN = "isloggedin";
-  static const String LOGINDATA = "logindata";
+  static const String isLoggedInKey = "isloggedin";
+  static const String loginDataKey = "logindata";
 
   static Future<bool> isLoggedIn() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getBool(ISLOGGEDIN) ?? false;
+    return sharedPreferences.getBool(isLoggedInKey) ?? false;
   }
 
   static Future<List> saveLoginData(LoginData loginData) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Future<bool> future1 =
-        sharedPreferences.setString(LOGINDATA, loginData.toJson());
-    Future<bool> future2 = sharedPreferences.setBool(ISLOGGEDIN, true);
+        sharedPreferences.setString(loginDataKey, loginData.toJson());
+    Future<bool> future2 = sharedPreferences.setBool(isLoggedInKey, true);
     return Future.wait([future1, future2]);
   }
 
   static Future<LoginData> getLoginData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String loginDataJson = sharedPreferences.getString(LOGINDATA) ??
+    String loginDataJson = sharedPreferences.getString(loginDataKey) ??
         LoginData(token: "", name: "guest", username: "guest").toJson();
     LoginData loginData = LoginData.fromJson(loginDataJson);
     return loginData;
@@ -28,8 +28,8 @@ class LoginUtil {
 
   static Future logout() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    Future<bool> future1 = sharedPreferences.remove(ISLOGGEDIN);
-    Future<bool> future2 = sharedPreferences.remove(LOGINDATA);
+    Future<bool> future1 = sharedPreferences.remove(isLoggedInKey);
+    Future<bool> future2 = sharedPreferences.remove(loginDataKey);
     return Future.wait([future1, future2]);
   }
 }

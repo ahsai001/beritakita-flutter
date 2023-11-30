@@ -4,6 +4,7 @@ import 'package:beritakita/src/login/models/login_response.dart';
 import 'package:beritakita/src/utils/login_util.dart';
 import 'package:beritakita/src/widgets/app_root.dart';
 import 'package:beritakita/src/widgets/color_loader.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
@@ -22,7 +23,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("login rebuild");
+    if (kDebugMode) {
+      print("login rebuild");
+    }
     return Scaffold(
         appBar: AppBar(title: const Text("Login")),
         body: Container(
@@ -67,9 +70,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text("login"),
                     onPressed: () {
                       //FormState? _formState = _formKey.currentState;
-                      FormState? formState = Form.of(
+                      final formState = Form.of(
                           context); //to use this, need Builder widget inside Form
-                      if (formState.validate() ?? false) {
+                      if (formState.validate()) {
                         formState.save();
                         //hit to web service
                         showDialog(
@@ -89,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         /*Future.delayed(Duration(milliseconds: 5000))
                             .then((value) => {Navigator.pop(context)});*/
-                        _login(request)?.then((LoginResponse value) {
+                        _login(request).then((LoginResponse value) {
                           if (value.status == 1) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -117,10 +120,10 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  Future<LoginResponse>? _login(LoginRequest request) async {
+  Future<LoginResponse> _login(LoginRequest request) async {
     final packageInfo = await PackageInfo.fromPlatform();
     final response = await http.post(
-        Uri.https(Config.BASE_AUTHORITY, Config.getLoginPath()),
+        Uri.https(Config.baseAuthority, Config.getLoginPath()),
         headers: <String, String>{
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',

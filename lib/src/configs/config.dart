@@ -1,36 +1,36 @@
 class Config {
-  static const String BASE_AUTHORITY = "a82e-182-0-191-105.ngrok-free.app";
-  static const String PROTOCOL = "https";
+  static const String baseAuthority = "1ad3-182-0-100-126.ngrok-free.app";
+  static const String protocol = "https";
   //static const String BASE_AUTHORITY = "192.168.43.172:8080";
   //https://flutter.dev/docs/release/breaking-changes/network-policy-ios-android
 
-  static const String BASE_PATH = "/kango/cijou/";
-  static const String API_KEY = "qwerty123456";
-  static const String GROUP_CODE = "ABJAL1";
+  static const String basePath = "/kango/cijou/";
+  static const String apiKey = "qwerty123456";
+  static const String groupCode = "ABJAL1";
 
   static String baseUrl() {
-    return "$PROTOCOL://$BASE_AUTHORITY/kango/";
+    return "$protocol://$baseAuthority/kango/";
   }
 
   static String getLoginPath() {
-    return "${BASE_PATH}login";
+    return "${basePath}login";
   }
 
   static String getNewsListPath() {
-    return "${BASE_PATH}news/all";
+    return "${basePath}news/all";
   }
 
   static String getNewsDetailPath() {
-    return "${BASE_PATH}news/detail/{id}";
+    return "${basePath}news/detail/{id}";
   }
 
   static String getAddNewsPath() {
-    return "${BASE_PATH}news/add";
+    return "${basePath}news/add";
   }
 
-  static const String APP_PREFERENCES = "beritakita_preferences";
-  static const String DATA_TOKEN = "data_token";
-  static const String DATA_NAME = "data_name";
-  static const String DATA_USERNAME = "data_username";
-  static const String DATA_ISLOGGEDIN = "data_isloggedin";
+  static const String appPreferences = "beritakita_preferences";
+  static const String dataToken = "data_token";
+  static const String dataName = "data_name";
+  static const String dataUsername = "data_username";
+  static const String dataIsloggedin = "data_isloggedin";
 }

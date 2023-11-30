@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 class App extends StatelessWidget {
   const App({super.key});
 
-  //final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -16,7 +15,6 @@ class App extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => AppRoot(),
         child: MaterialApp(
-          //scaffoldMessengerKey: rootScaffoldMessengerKey,
           title: 'Berita Kita',
           theme: ThemeData(
             primarySwatch: Colors.blue,

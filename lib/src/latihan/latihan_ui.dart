@@ -1,4 +1,4 @@
-
+import 'package:beritakita/src/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
 
 class LatihanUiPage extends StatefulWidget {
@@ -125,7 +125,7 @@ class _LatihanUiPageState extends State<LatihanUiPage> {
             ),
             const UnconstrainedBox(
               alignment: Alignment.centerLeft,
-              child: CircularProgressIndicator(),
+              child: CustomLoader(),
             ),
           ],
         ),
