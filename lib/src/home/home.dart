@@ -15,7 +15,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -380,7 +380,7 @@ class _HomePageState extends State<HomePage> {
           'Accept': 'application/json; charset=UTF-8',
           'Authorization': 'QVBJS0VZPXF3ZXJ0eTEyMzQ1Ng==',
           'x-packagename': packageInfo.packageName,
-          'x-platform': "android"
+          'x-platform': "android",
         },
         body: <String, String>{
           'groupcode': Config.groupCode,
